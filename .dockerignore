@@ -1,0 +1,69 @@
+# ============VCS metadata============
+.git/
+.gitignore
+.gitattributes
+
+# ============IDE / editor files============
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+# ============OS-generated junk============
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.Spotlight-V100/
+.Trashes/
+._*
+# ============Logs / temp / caches============
+*.log
+*.out
+*.err
+*.pid
+*.pid.lock
+logs/
+log/
+tmp/
+temp/
+.cache/
+# ============Secrets and local env files============
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+# Local-only Spring configs (potentially with secrets)
+application-local.yml
+application-local.yaml
+application-local.properties
+src/main/resources/application-local.yml
+src/main/resources/application-local.yaml
+src/main/resources/application-local.properties
+# ============Java / Maven build artifacts============
+target/
+**/target/
+.mvn/timing.properties
+# Test and coverage outputs (not needed for image build)
+src/test/
+**/surefire-reports/
+**/failsafe-reports/
+coverage/
+*.lcov
+# ============Frontend artifacts (Node/Vite)============
+**/node_modules/
+frontend/node_modules/
+dist/
+**/dist/
+frontend/dist/
+frontend/.vite/
+frontend/.cache/
+frontend/.eslintcache
+frontend/*.tsbuildinfo
+# ============Deployment/docs not required by Dockerfile build stage============
+deploy/
+README.md

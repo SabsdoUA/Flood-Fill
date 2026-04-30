@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", // Cieľové prostredie
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "useDefineForClassFields": true,
+
+    "module": "ESNext", // Správa a rozlíšenie modulov
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    "jsx": "react-jsx", // Nová transformácia pre React
+
+    "strict": true, // Prísna kontrola kódu a typov
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "noEmit": true, // Iba kontrola typov, generovanie vypnuté
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}

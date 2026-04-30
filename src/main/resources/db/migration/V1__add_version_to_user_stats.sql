@@ -1,0 +1,12 @@
+ALTER TABLE IF EXISTS user_stats
+    ADD COLUMN IF NOT EXISTS version BIGINT;
+
+UPDATE user_stats
+SET version = 0
+WHERE version IS NULL;
+
+ALTER TABLE IF EXISTS user_stats
+    ALTER COLUMN version SET DEFAULT 0;
+
+ALTER TABLE IF EXISTS user_stats
+    ALTER COLUMN version SET NOT NULL;

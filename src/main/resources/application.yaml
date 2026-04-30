@@ -1,0 +1,178 @@
+server:
+  address: ${SERVER_ADDRESS:0.0.0.0}
+  port: ${PORT:0}
+  # native = Tomcat RemoteIpValve: sets port=443 when X-Forwarded-Proto=https,
+  # which is required for correct OAuth2 redirect_uri matching on Cloud Run.
+  # (framework = Spring ForwardedHeaderFilter: fixes scheme but NOT port → OAuth2 breaks)
+  forward-headers-strategy: native
+
+spring:
+  application:
+    name: "Flood Fill"
+
+  threads:
+    virtual:
+      enabled: true
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+  # ── Datasource ──────────────────────────────────────────────────────────
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${POSTGRES_HOST:127.0.0.1}:${POSTGRES_PORT:5433}/${DB_NAME:postgres}}
+    username: ${SPRING_DATASOURCE_USERNAME:${DB_USER:postgres}}
+    password: "${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD}}"
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 20000
+      initialization-fail-timeout: 0
+      keepalive-time: 30000
+      max-lifetime: 1800000
+  # ── Redis (Lettuce + pool) ───────────────────────────────────────────────
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      username: default
+      password: ${REDIS_PASSWORD:}
+      connect-timeout: 2000ms
+      timeout: 1000ms
+      lettuce:
+        pool:
+          max-active: 64
+          min-idle: 8
+          max-idle: 32
+          max-wait: 500ms
+      repositories:
+        enabled: false
+
+    jpa:
+      repositories:
+        bootstrap-mode: default
+
+  # ── JPA ─────────────────────────────────────────────────────────────────
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        boot:
+          allow_jdbc_metadata_access: false
+
+  flyway:
+    baseline-on-migrate: true
+    baseline-version: 0
+
+  # ── H2 ──────────────────────────────────────────────────────────────────
+  h2:
+    console:
+      enabled: false
+
+  # ── Security / OAuth2 ───────────────────────────────────────────────────
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: "${OAUTH2_REDIRECT_URI:{baseUrl}/login/oauth2/code/{registrationId}}"
+
+  # ── Mail (SMTP) ─────────────────────────────────────────────────────────────
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:goserhiisubbotin@gmail.com}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+# ── App ─────────────────────────────────────────────────────────────────────
+app:
+  base-url: ${APP_BASE_URL:https://flood-fill-896272314633.europe-west1.run.app}
+  frontend-url: ${APP_FRONTEND_URL:https://flood-fill-896272314633.europe-west1.run.app}
+  cors-allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:https://flood-fill-896272314633.europe-west1.run.app}
+  auth:
+    remember-me:
+      key: ${APP_REMEMBER_ME_KEY}
+      cookie-name: ${APP_REMEMBER_ME_COOKIE_NAME:FF_REMEMBER_ME}
+      token-validity-seconds: ${APP_REMEMBER_ME_TOKEN_VALIDITY_SECONDS:2592000}
+      secure-cookie: ${APP_REMEMBER_ME_SECURE_COOKIE:false}
+  mail:
+    from: ${MAIL_FROM:goserhiisubbotin@gmail.com}
+    allow-log-fallback: false
+
+# ── Actuator ────────────────────────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health, info, metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] [%X{requestId}] %logger{36} - %msg%n"
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.orm.jdbc.bind: WARN
+    org.springframework.data.redis: WARN
+    org.springframework.boot.autoconfigure.data.redis: WARN
+    com.zaxxer.hikari: INFO
+    sk.tuke.gamestudio: INFO
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    org.springframework.boot.devtools: DEBUG
+    org.springframework.boot.devtools.autoconfigure: DEBUG
+    org.springframework.boot.devtools.restart: DEBUG
+    org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger: INFO
+---
+spring:
+  config:
+    activate:
+      on-profile: gcp
+
+  datasource:
+    url: jdbc:postgresql:///${DB_NAME:postgres}
+    username: ${DB_USER:postgres}
+    password: "${DB_PASSWORD}"
+    hikari:
+      data-source-properties:
+        socketFactory: com.google.cloud.sql.postgres.SocketFactory
+        cloudSqlInstance: ${INSTANCE_CONNECTION_NAME}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        boot:
+          allow_jdbc_metadata_access: false
+  data:
+    redis:
+      host: ${REDIS_HOST:10.37.188.235}
+      port: ${REDIS_PORT:6379}
+app:
+  auth:
+    remember-me:
+      secure-cookie: ${APP_REMEMBER_ME_SECURE_COOKIE:true}

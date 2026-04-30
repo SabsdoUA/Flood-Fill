@@ -1,0 +1,61 @@
+# ============OS / file managers============
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.Spotlight-V100/
+.Trashes/
+._*
+# ============IDE / editors============
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+*~
+# ============Logs and temporary files============
+*.log
+*.out
+*.err
+*.pid
+*.pid.lock
+logs/
+tmp/
+temp/
+# ============Java / Maven / Spring Boot============
+/target/
+**/target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+# ============Tests and coverage artifacts============
+coverage/
+*.lcov
+# ============Node.js / frontend (Vite + React + TypeScript)============
+**/node_modules/
+frontend/node_modules/
+dist/
+**/dist/
+frontend/dist/
+frontend/.vite/
+frontend/.cache/
+frontend/.eslintcache
+frontend/*.tsbuildinfo
+# ============Docker / container local artifacts============
+.docker/
+# ============Sensitive data (secrets, keys, tokens)============
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+# Local configs with potential secrets
+application-local.yaml
+application-local.yml
+application-local.properties
