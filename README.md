@@ -557,6 +557,29 @@ docker run --rm -p 8080:8080 -e PORT=8080 -e SPRING_PROFILES_ACTIVE=gcp floodfil
 - Kontajner očakáva externé služby pre PostgreSQL a Redis a príslušné environment premenné.
 - Frontend build je vložený do `src/main/resources/static`.
 - Pri nasadení je potrebné dodať všetky citlivé premenné cez bezpečný secrets management.
+- Samotný `deploy/cloudrun.env.yaml` nestačí pre produkčný štart. `DB_PASSWORD`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `MAIL_PASSWORD` a `APP_REMEMBER_ME_KEY` musia prísť zo Secret Managera, inak Cloud Run revízia spadne ešte počas inicializácie `DataSource`/Flyway.
+
+### Cloud Run deploy so secretmi
+
+PowerShell skript `deploy/deploy-cloudrun.ps1` nasadí službu s:
+
+- `deploy/cloudrun.env.yaml` pre ne-citlivé premenné,
+- `--set-secrets` pre citlivé hodnoty zo Secret Managera,
+- Cloud SQL a VPC nastaveniami pre aktuálny projekt.
+
+Pred spustením overte, že v projekte existujú secret-y:
+
+- `DB_PASSWORD`
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `MAIL_PASSWORD`
+- `APP_REMEMBER_ME_KEY`
+
+Nasadenie:
+
+```powershell
+./deploy/deploy-cloudrun.ps1
+```
 
 ## Štruktúra repozitára
 
