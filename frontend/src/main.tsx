@@ -2453,6 +2453,8 @@ const App = () => {
     const prevGameRef = useRef<UiGameState | null>(null);
     const gameRef = useRef(game);
     const gameSizeRef = useRef(gameSize);
+    const moveInFlightRef = useRef(false);
+    const gameRequestGenerationRef = useRef(0);
 
     useLayoutEffect(() => {
         gameRef.current = game;
@@ -2478,20 +2480,27 @@ const App = () => {
         requestFailureMessage: string,
         transportFailureMessage: string,
     ) => {
+        const gameId = getOrCreateGameId();
+        const generation = gameRequestGenerationRef.current;
+        const isCurrentRequest = () =>
+            generation === gameRequestGenerationRef.current && localStorage.getItem(GAME_ID_STORAGE_ID) === gameId;
+
         try {
-            const gameId = getOrCreateGameId();
             const res = await csrfFetch(buildGameApiUrl(gameId, action), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body),
             });
+            if (!isCurrentRequest()) return;
             if (!res.ok) {
                 setMsg(requestFailureMessage);
                 return;
             }
-            applyServerGameState((await res.json()) as ServerGameState);
+            const data = (await res.json()) as ServerGameState;
+            if (!isCurrentRequest()) return;
+            applyServerGameState(data);
         } catch {
-            setMsg(transportFailureMessage);
+            if (isCurrentRequest()) setMsg(transportFailureMessage);
         }
     }, [applyServerGameState]);
 
@@ -2514,23 +2523,30 @@ const App = () => {
     }, [executeGameRequest]);
 
     const moveGameHttp = useCallback(async (color: string) => {
-        await executeGameRequest(
-            'move',
-            { color },
-            'Nepodarilo sa vykonať ťah na serveri',
-            'Nepodarilo sa načítať hru zo servera',
-        );
+        if (moveInFlightRef.current) return;
+        moveInFlightRef.current = true;
+        try {
+            await executeGameRequest(
+                'move',
+                { color },
+                'Nepodarilo sa vykonať ťah na serveri',
+                'Nepodarilo sa načítať hru zo servera',
+            );
+        } finally {
+            moveInFlightRef.current = false;
+        }
     }, [executeGameRequest]);
 
     const handleNewGame = useCallback((size: GameSize) => {
         setMsg('');
+        gameRequestGenerationRef.current += 1;
         resetGameId();
         void startGameHttp(size);
     }, [startGameHttp]);
 
     const handleMove = useCallback((color: string) => {
         const g = gameRef.current;
-        if (!g || g.isFinished) return;
+        if (!g || g.isFinished || moveInFlightRef.current) return;
         void moveGameHttp(color);
     }, [moveGameHttp]);
 
@@ -2562,6 +2578,7 @@ const App = () => {
             let timeoutId: number | undefined;
             try {
                 if (new URLSearchParams(window.location.search).get('oauth') === '1') {
+                    gameRequestGenerationRef.current += 1;
                     resetGameId();
                     clearCurrentSearchParams('oauth');
                 }

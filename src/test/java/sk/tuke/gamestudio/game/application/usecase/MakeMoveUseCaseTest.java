@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.game.application.usecase;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,9 +22,18 @@ import static org.mockito.Mockito.*;
 class MakeMoveUseCaseTest {
 
     @Mock private Ports.GameRepository repo;
+    @Mock private Ports.GameLock gameLock;
     @Mock private GameStateMapper mapper;
 
     @InjectMocks private MakeMoveUseCase useCase;
+
+    @BeforeEach
+    void setUpLock() {
+        lenient().when(gameLock.withLock(anyString(), any())).thenAnswer(invocation -> {
+            java.util.function.Supplier<?> action = invocation.getArgument(1);
+            return action.get();
+        });
+    }
 
     private static Board board(Color[][] grid) {
         return new Board(grid, grid.length);

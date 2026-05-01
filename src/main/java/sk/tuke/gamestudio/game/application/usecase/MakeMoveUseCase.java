@@ -18,9 +18,14 @@ import sk.tuke.gamestudio.game.domain.service.WinChecker;
 public class MakeMoveUseCase {
 
     private final Ports.GameRepository repo;
+    private final Ports.GameLock gameLock;
     private final GameStateMapper mapper;
 
     public GameResponse execute(GameCommands.MakeMove cmd, String ownerIdentity) {
+        return gameLock.withLock(cmd.gameId(), () -> executeLocked(cmd, ownerIdentity));
+    }
+
+    private GameResponse executeLocked(GameCommands.MakeMove cmd, String ownerIdentity) {
         var state = repo.findById(cmd.gameId())
                 .orElseThrow(() -> new GameDomainException.NotFound(cmd.gameId()));
         requireOwner(state, ownerIdentity);

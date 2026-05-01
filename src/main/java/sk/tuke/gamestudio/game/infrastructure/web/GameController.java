@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.tuke.gamestudio.authentication.core.service.UserService;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/game")
 @RequiredArgsConstructor
+@Slf4j
 public class GameController {
 
     private final StartGameUseCase startGame;
@@ -74,8 +76,13 @@ public class GameController {
             return;
         }
 
-        resolveCurrentUser(principal)
-                .ifPresent(user -> leaderboardService.recordWin(user, response.gameId(), boardSize.get()));
+        try {
+            resolveCurrentUser(principal)
+                    .ifPresent(user -> leaderboardService.recordWin(user, response.gameId(), boardSize.get()));
+        } catch (Exception ex) {
+            log.warn("Win was produced but leaderboard recording failed for game {}: {}",
+                    response.gameId(), ex.getMessage());
+        }
     }
 
     private Optional<sk.tuke.gamestudio.authentication.core.model.User> resolveCurrentUser(Principal principal) {

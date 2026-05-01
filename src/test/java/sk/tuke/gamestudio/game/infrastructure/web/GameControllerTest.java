@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -70,6 +71,22 @@ class GameControllerTest {
 
         assertThat(entity.getBody()).isSameAs(response);
         verify(leaderboardService).recordWin(user, "id", sk.tuke.gamestudio.leaderboard.model.UserStats.BoardSize.SMALL);
+    }
+
+    @Test
+    void givenLeaderboardFailure_whenMoveWins_thenStillReturnGameResponse() throws Exception {
+        var user = new sk.tuke.gamestudio.authentication.core.model.User();
+        GameResponse response = new GameResponse("id", new String[12][12], 2, 3, "WON", true, null);
+        when(userService.resolveIdentity(principal)).thenReturn(Optional.of("qa@example.com"));
+        when(makeMove.execute(any(), any())).thenReturn(response);
+        when(userService.resolveUser(principal)).thenReturn(Optional.of(user));
+        doThrow(new RuntimeException("database down"))
+                .when(leaderboardService)
+                .recordWin(user, "id", sk.tuke.gamestudio.leaderboard.model.UserStats.BoardSize.SMALL);
+
+        ResponseEntity<?> entity = invoke("move", "id", moveBody("RED"));
+
+        assertThat(entity.getBody()).isSameAs(response);
     }
 
     private ResponseEntity<?> invoke(String methodName, String gameId, Object body) throws Exception {
