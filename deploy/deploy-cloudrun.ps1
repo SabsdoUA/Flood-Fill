@@ -12,6 +12,7 @@ $ErrorActionPreference = "Stop"
 
 $requiredSecrets = @(
     "DB_PASSWORD=DB_PASSWORD:latest",
+    "REDIS_PASSWORD=REDIS_PASSWORD:latest",
     "GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest",
     "GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest",
     "MAIL_PASSWORD=MAIL_PASSWORD:latest",

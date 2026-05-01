@@ -176,9 +176,9 @@ spring:
       port: ${REDIS_PORT:6379}
 app:
   redis:
-    fail-fast: ${APP_REDIS_FAIL_FAST:true}
+    fail-fast: ${APP_REDIS_FAIL_FAST:false}
   game:
-    local-state-fallback-enabled: ${APP_GAME_LOCAL_STATE_FALLBACK_ENABLED:false}
+    local-state-fallback-enabled: ${APP_GAME_LOCAL_STATE_FALLBACK_ENABLED:true}
   auth:
     remember-me:
       secure-cookie: ${APP_REMEMBER_ME_SECURE_COOKIE:true}

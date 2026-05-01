@@ -1,0 +1,2002 @@
+﻿[
+  {
+    "insertId": "ukl7c1d2zba",
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Services.ReplaceService",
+      "resourceName": "namespaces/project-d8c92b26-085d-46d0-a85/revisions/flood-fill-00067-tfz",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Revision",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Revision",
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "3",
+            "run.googleapis.com/build-source-location": "{\"flood-fill-1\":\"gs://run-sources-project-d8c92b26-085d-46d0-a85-europe-west1/services/flood-fill/1777618452.995329-d1894cda464e4c418d068550f7b95e5b.zip#1777618453397543\"}",
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "565.0.0",
+            "run.googleapis.com/cloudsql-instances": "project-d8c92b26-085d-46d0-a85:europe-west1:flood-fill-db",
+            "run.googleapis.com/network-interfaces": "[{\"network\": \"default\", \"subnetwork\": \"default\"}]",
+            "run.googleapis.com/operation-id": "b042490c-8ff8-4015-b89f-56242d577fb6",
+            "run.googleapis.com/startup-cpu-boost": "true",
+            "run.googleapis.com/vpc-access-egress": "private-ranges-only",
+            "serving.knative.dev/creator": "goserhiisubbotin@gmail.com"
+          },
+          "creationTimestamp": "2026-05-01T06:57:23.042100Z",
+          "generation": 1,
+          "labels": {
+            "client.knative.dev/nonce": "sinpvmbywb",
+            "cloud.googleapis.com/location": "europe-west1",
+            "run.googleapis.com/startupProbeType": "Default",
+            "serving.knative.dev/configuration": "flood-fill",
+            "serving.knative.dev/configurationGeneration": "67",
+            "serving.knative.dev/route": "flood-fill",
+            "serving.knative.dev/service": "flood-fill",
+            "serving.knative.dev/serviceUid": "7c7394e6-9171-4b09-97a3-7cafd827cd19"
+          },
+          "name": "flood-fill-00067-tfz",
+          "namespace": "896272314633",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Configuration",
+              "name": "flood-fill",
+              "uid": "18349d6c-9e1c-4a99-a1ff-e44e5911baf2"
+            }
+          ],
+          "resourceVersion": "AAZQvBjFrd8",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/896272314633/revisions/flood-fill-00067-tfz",
+          "uid": "ff07c241-beb1-404b-98ec-9a88a51f20f8"
+        },
+        "spec": {
+          "containerConcurrency": 80,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "DB_PASSWORD",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "latest",
+                      "name": "DB_PASSWORD"
+                    }
+                  }
+                },
+                {
+                  "name": "REDIS_PASSWORD",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "latest",
+                      "name": "REDIS_PASSWORD"
+                    }
+                  }
+                },
+                {
+                  "name": "GOOGLE_CLIENT_ID",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "latest",
+                      "name": "GOOGLE_CLIENT_ID"
+                    }
+                  }
+                },
+                {
+                  "name": "GOOGLE_CLIENT_SECRET",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "latest",
+                      "name": "GOOGLE_CLIENT_SECRET"
+                    }
+                  }
+                },
+                {
+                  "name": "MAIL_PASSWORD",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "latest",
+                      "name": "MAIL_PASSWORD"
+                    }
+                  }
+                },
+                {
+                  "name": "APP_REMEMBER_ME_KEY",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "latest",
+                      "name": "APP_REMEMBER_ME_KEY"
+                    }
+                  }
+                },
+                {
+                  "name": "SPRING_PROFILES_ACTIVE",
+                  "value": "gcp"
+                },
+                {
+                  "name": "INSTANCE_CONNECTION_NAME",
+                  "value": "project-d8c92b26-085d-46d0-a85:europe-west1:flood-fill-db"
+                },
+                {
+                  "name": "DB_NAME",
+                  "value": "postgres"
+                },
+                {
+                  "name": "DB_USER",
+                  "value": "postgres"
+                },
+                {
+                  "name": "APP_BASE_URL",
+                  "value": "https://flood-fill-896272314633.europe-west1.run.app"
+                },
+                {
+                  "name": "APP_FRONTEND_URL",
+                  "value": "https://flood-fill-896272314633.europe-west1.run.app"
+                },
+                {
+                  "name": "APP_CORS_ALLOWED_ORIGINS",
+                  "value": "https://flood-fill-896272314633.europe-west1.run.app"
+                },
+                {
+                  "name": "OAUTH2_REDIRECT_URI",
+                  "value": "https://flood-fill-896272314633.europe-west1.run.app/login/oauth2/code/google"
+                },
+                {
+                  "name": "MAIL_USERNAME",
+                  "value": "goserhiisubbotin@gmail.com"
+                },
+                {
+                  "name": "MAIL_FROM",
+                  "value": "goserhiisubbotin@gmail.com"
+                },
+                {
+                  "name": "REDIS_HOST",
+                  "value": "10.37.188.235"
+                },
+                {
+                  "name": "REDIS_PORT",
+                  "value": "6379"
+                }
+              ],
+              "image": "europe-west1-docker.pkg.dev/project-d8c92b26-085d-46d0-a85/cloud-run-source-deploy/flood-fill@sha256:b4afd214fedc7a263aad464a94fb3366287dca61142e2e239d6fadd85d780ac3",
+              "name": "flood-fill-1",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http1"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "512Mi"
+                }
+              },
+              "startupProbe": {
+                "failureThreshold": 1,
+                "periodSeconds": 240,
+                "tcpSocket": {
+                  "port": 8080
+                },
+                "timeoutSeconds": 240
+              }
+            }
+          ],
+          "serviceAccountName": "896272314633-compute@developer.gserviceaccount.com",
+          "timeoutSeconds": 300
+        },
+        "status": {
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-05-01T06:57:39.945951Z",
+              "message": "The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=project-d8c92b26-085d-46d0-a85&resource=cloud_run_revision/service_name/flood-fill/revision_name/flood-fill-00067-tfz&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22flood-fill%22%0Aresource.labels.revision_name%3D%22flood-fill-00067-tfz%22 \nFor more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start",
+              "reason": "HealthCheckContainerError",
+              "status": "False",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2026-05-01T06:57:39.945951Z",
+              "message": "The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=project-d8c92b26-085d-46d0-a85&resource=cloud_run_revision/service_name/flood-fill/revision_name/flood-fill-00067-tfz&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22flood-fill%22%0Aresource.labels.revision_name%3D%22flood-fill-00067-tfz%22 \nFor more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start",
+              "reason": "HealthCheckContainerError",
+              "status": "False",
+              "type": "ContainerHealthy"
+            },
+            {
+              "lastTransitionTime": "2026-05-01T06:57:28.115676Z",
+              "message": "Container image import completed in 4.59s.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-05-01T06:57:29.739738Z",
+              "message": "Provisioning imported containers completed in 1.62s. Checking container health. This will wait for up to 4m for the configured startup probe, including an initial delay of 0s.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            },
+            {
+              "lastTransitionTime": "2026-05-01T06:57:29.739738Z",
+              "message": "System will retry after 00:00 from lastTransitionTime for attempt 0.",
+              "reason": "ImmediateRetry",
+              "severity": "Info",
+              "status": "True",
+              "type": "Retry"
+            }
+          ],
+          "containerStatuses": [
+            {
+              "imageDigest": "europe-west1-docker.pkg.dev/project-d8c92b26-085d-46d0-a85/cloud-run-source-deploy/flood-fill@sha256:b4afd214fedc7a263aad464a94fb3366287dca61142e2e239d6fadd85d780ac3",
+              "name": "flood-fill-1"
+            }
+          ],
+          "imageDigest": "europe-west1-docker.pkg.dev/project-d8c92b26-085d-46d0-a85/cloud-run-source-deploy/flood-fill@sha256:b4afd214fedc7a263aad464a94fb3366287dca61142e2e239d6fadd85d780ac3",
+          "logUrl": "https://console.cloud.google.com/logs/viewer?project=project-d8c92b26-085d-46d0-a85&resource=cloud_run_revision/service_name/flood-fill/revision_name/flood-fill-00067-tfz&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22flood-fill%22%0Aresource.labels.revision_name%3D%22flood-fill-00067-tfz%22",
+          "observedGeneration": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "code": 9,
+        "message": "Ready condition status changed to False for Revision flood-fill-00067-tfz with message: The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=project-d8c92b26-085d-46d0-a85&resource=cloud_run_revision/service_name/flood-fill/revision_name/flood-fill-00067-tfz&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22flood-fill%22%0Aresource.labels.revision_name%3D%22flood-fill-00067-tfz%22 \nFor more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start"
+      }
+    },
+    "receiveTimestamp": "2026-05-01T06:57:40.406434223Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "timestamp": "2026-05-01T06:57:39.955560Z"
+  },
+  {
+    "insertId": "69f44ee3000e6e53ef29b029",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-05-01T06:57:40.139532537Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "textPayload": "Default STARTUP TCP probe failed 1 time consecutively for container \"flood-fill-1\" on port 8080. The instance was not started.\nConnection failed with status CANCELLED.",
+    "timestamp": "2026-05-01T06:57:39.945747Z"
+  },
+  {
+    "insertId": "69f44ee3000c7e007dd1e0f5",
+    "labels": {
+      "container_name": "flood-fill-1",
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-05-01T06:57:40.139532537Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Container called exit(1).",
+    "timestamp": "2026-05-01T06:57:39.818623207Z"
+  },
+  {
+    "insertId": "69f44ee300015e531ab2e2bd",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\t... 22 common frames omitted",
+    "timestamp": "2026-05-01T06:57:39.089683Z"
+  },
+  {
+    "insertId": "69f44ee300015e4fce8a2bad",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822)",
+    "timestamp": "2026-05-01T06:57:39.089679Z"
+  },
+  {
+    "insertId": "69f44ee300015e4c7e6f0282",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873)",
+    "timestamp": "2026-05-01T06:57:39.089676Z"
+  },
+  {
+    "insertId": "69f44ee300015e498968971c",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer.afterPropertiesSet(FlywayMigrationInitializer.java:66)",
+    "timestamp": "2026-05-01T06:57:39.089673Z"
+  },
+  {
+    "insertId": "69f44ee300015e451234e47e",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.flywaydb.core.Flyway.migrate(Flyway.java:188)",
+    "timestamp": "2026-05-01T06:57:39.089669Z"
+  },
+  {
+    "insertId": "69f44ee300015e426ba7b63a",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.flywaydb.core.FlywayExecutor.execute(FlywayExecutor.java:210)",
+    "timestamp": "2026-05-01T06:57:39.089666Z"
+  },
+  {
+    "insertId": "69f44ee300015e3c29b3c05e",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.flywaydb.core.Flyway.lambda$migrate$1(Flyway.java:201)",
+    "timestamp": "2026-05-01T06:57:39.089660Z"
+  },
+  {
+    "insertId": "69f44ee300015e3940e3e114",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE",
+    "timestamp": "2026-05-01T06:57:39.089657Z"
+  },
+  {
+    "insertId": "69f44ee300015e36cdbb50ee",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Either revert the changes to the migration, or run repair to update the schema history.",
+    "timestamp": "2026-05-01T06:57:39.089654Z"
+  },
+  {
+    "insertId": "69f44ee300015e3264c0c11c",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "-> Resolved locally    : 765782572",
+    "timestamp": "2026-05-01T06:57:39.089650Z"
+  },
+  {
+    "insertId": "69f44ee300015e2e0946218c",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "-> Applied to database : -1518808887",
+    "timestamp": "2026-05-01T06:57:39.089646Z"
+  },
+  {
+    "insertId": "69f44ee300015e2b9ff94e34",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Migration checksum mismatch for migration version 1",
+    "timestamp": "2026-05-01T06:57:39.089643Z"
+  },
+  {
+    "insertId": "69f44ee300015e28f919b938",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Caused by: org.flywaydb.core.api.exception.FlywayValidateException: Validate failed: Migrations have failed validation",
+    "timestamp": "2026-05-01T06:57:39.089640Z"
+  },
+  {
+    "insertId": "69f44ee300015e220b54c195",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\t... 15 common frames omitted",
+    "timestamp": "2026-05-01T06:57:39.089634Z"
+  },
+  {
+    "insertId": "69f44ee300015e1f68fecdad",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)",
+    "timestamp": "2026-05-01T06:57:39.089631Z"
+  },
+  {
+    "insertId": "69f44ee300015e1b444d125c",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)",
+    "timestamp": "2026-05-01T06:57:39.089627Z"
+  },
+  {
+    "insertId": "69f44ee300015e188ef1eb28",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)",
+    "timestamp": "2026-05-01T06:57:39.089624Z"
+  },
+  {
+    "insertId": "69f44ee300015e156581cf9f",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)",
+    "timestamp": "2026-05-01T06:57:39.089621Z"
+  },
+  {
+    "insertId": "69f44ee300015e1203e035fc",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)",
+    "timestamp": "2026-05-01T06:57:39.089618Z"
+  },
+  {
+    "insertId": "69f44ee300015e0e17042c61",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)",
+    "timestamp": "2026-05-01T06:57:39.089614Z"
+  },
+  {
+    "insertId": "69f44ee300015e0add7b4521",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607)",
+    "timestamp": "2026-05-01T06:57:39.089610Z"
+  },
+  {
+    "insertId": "69f44ee300015e0693c71f73",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1826)",
+    "timestamp": "2026-05-01T06:57:39.089606Z"
+  },
+  {
+    "insertId": "69f44ee300015e027ff0862a",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE",
+    "timestamp": "2026-05-01T06:57:39.089602Z"
+  },
+  {
+    "insertId": "69f44ee300015dffca38f88a",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Either revert the changes to the migration, or run repair to update the schema history.",
+    "timestamp": "2026-05-01T06:57:39.089599Z"
+  },
+  {
+    "insertId": "69f44ee300015dfae7389ef5",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "-> Resolved locally    : 765782572",
+    "timestamp": "2026-05-01T06:57:39.089594Z"
+  },
+  {
+    "insertId": "69f44ee300015df7362a4fca",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "-> Applied to database : -1518808887",
+    "timestamp": "2026-05-01T06:57:39.089591Z"
+  },
+  {
+    "insertId": "69f44ee300015df307df7248",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Migration checksum mismatch for migration version 1",
+    "timestamp": "2026-05-01T06:57:39.089587Z"
+  },
+  {
+    "insertId": "69f44ee300015df0d551eb18",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Validate failed: Migrations have failed validation",
+    "timestamp": "2026-05-01T06:57:39.089584Z"
+  },
+  {
+    "insertId": "69f44ee300015de7775f3320",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.boot.loader.launch.JarLauncher.main(JarLauncher.java:40)",
+    "timestamp": "2026-05-01T06:57:39.089575Z"
+  },
+  {
+    "insertId": "69f44ee300015de416ce1f96",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:64)",
+    "timestamp": "2026-05-01T06:57:39.089572Z"
+  },
+  {
+    "insertId": "69f44ee300015de24a2b1bc2",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:106)",
+    "timestamp": "2026-05-01T06:57:39.089570Z"
+  },
+  {
+    "insertId": "69f44ee300015ddebb75bc71",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat java.base/java.lang.reflect.Method.invoke(Unknown Source)",
+    "timestamp": "2026-05-01T06:57:39.089566Z"
+  },
+  {
+    "insertId": "69f44ee300015dd9762acabb",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)",
+    "timestamp": "2026-05-01T06:57:39.089561Z"
+  },
+  {
+    "insertId": "69f44ee300015dd67ad6c32c",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat sk.tuke.gamestudio.FloodFillApplication.main(FloodFillApplication.java:59)",
+    "timestamp": "2026-05-01T06:57:39.089558Z"
+  },
+  {
+    "insertId": "69f44ee300015dd3dad42585",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)",
+    "timestamp": "2026-05-01T06:57:39.089555Z"
+  },
+  {
+    "insertId": "69f44ee300015dcf291b1bde",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)",
+    "timestamp": "2026-05-01T06:57:39.089551Z"
+  },
+  {
+    "insertId": "69f44ee300015dccae4f93ba",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.boot.SpringApplication.run(SpringApplication.java:318)",
+    "timestamp": "2026-05-01T06:57:39.089548Z"
+  },
+  {
+    "insertId": "69f44ee300015dc86cbaca48",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)",
+    "timestamp": "2026-05-01T06:57:39.089544Z"
+  },
+  {
+    "insertId": "69f44ee300015dc57d91705f",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)",
+    "timestamp": "2026-05-01T06:57:39.089541Z"
+  },
+  {
+    "insertId": "69f44ee300015dc0abae8f3c",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)",
+    "timestamp": "2026-05-01T06:57:39.089536Z"
+  },
+  {
+    "insertId": "69f44ee300015dbd3994b52a",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)",
+    "timestamp": "2026-05-01T06:57:39.089533Z"
+  },
+  {
+    "insertId": "69f44ee300015db99016f48c",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:973)",
+    "timestamp": "2026-05-01T06:57:39.089529Z"
+  },
+  {
+    "insertId": "69f44ee300015db421abc104",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)",
+    "timestamp": "2026-05-01T06:57:39.089524Z"
+  },
+  {
+    "insertId": "69f44ee300015db195bbd8e3",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:328)",
+    "timestamp": "2026-05-01T06:57:39.089521Z"
+  },
+  {
+    "insertId": "69f44ee300015dac757bd97f",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE",
+    "timestamp": "2026-05-01T06:57:39.089516Z"
+  },
+  {
+    "insertId": "69f44ee300015da878a06e75",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Either revert the changes to the migration, or run repair to update the schema history.",
+    "timestamp": "2026-05-01T06:57:39.089512Z"
+  },
+  {
+    "insertId": "69f44ee300015da57b6b5354",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "-> Resolved locally    : 765782572",
+    "timestamp": "2026-05-01T06:57:39.089509Z"
+  },
+  {
+    "insertId": "69f44ee300015da2dd2b51eb",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "-> Applied to database : -1518808887",
+    "timestamp": "2026-05-01T06:57:39.089506Z"
+  },
+  {
+    "insertId": "69f44ee300015d9e4304e391",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Migration checksum mismatch for migration version 1",
+    "timestamp": "2026-05-01T06:57:39.089502Z"
+  },
+  {
+    "insertId": "69f44ee300015d9adee3dabe",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Failed to initialize dependency 'flywayInitializer' of LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Validate failed: Migrations have failed validation",
+    "timestamp": "2026-05-01T06:57:39.089498Z"
+  },
+  {
+    "insertId": "69f44ee300015d86d01c4053",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:39.086 ERROR [main] [] o.s.boot.SpringApplication - Application run failed",
+    "timestamp": "2026-05-01T06:57:39.089478Z"
+  },
+  {
+    "insertId": "69f44ee30000ec24cc6af6cc",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.",
+    "timestamp": "2026-05-01T06:57:39.060452Z"
+  },
+  {
+    "insertId": "69f44ee30000ec15939768eb",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:39.061 INFO  [main] [] o.s.b.a.l.ConditionEvaluationReportLogger - ",
+    "timestamp": "2026-05-01T06:57:39.060437Z"
+  },
+  {
+    "insertId": "69f44ee30000964952f854a9",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:39.039 INFO  [main] [] o.a.catalina.core.StandardService - Stopping service [Tomcat]",
+    "timestamp": "2026-05-01T06:57:39.038473Z"
+  },
+  {
+    "insertId": "69f44ee30000869ada1df121",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:39.035 INFO  [main] [] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.",
+    "timestamp": "2026-05-01T06:57:39.034458Z"
+  },
+  {
+    "insertId": "69f44ee2000f3019c7dbb351",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:38.996 INFO  [main] [] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...",
+    "timestamp": "2026-05-01T06:57:38.995353Z"
+  },
+  {
+    "insertId": "69f44ee2000f2f70d9cd79eb",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE",
+    "timestamp": "2026-05-01T06:57:38.995184Z"
+  },
+  {
+    "insertId": "69f44ee2000f2f6de9182180",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Either revert the changes to the migration, or run repair to update the schema history.",
+    "timestamp": "2026-05-01T06:57:38.995181Z"
+  },
+  {
+    "insertId": "69f44ee2000f2f69f1c07dc9",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "-> Resolved locally    : 765782572",
+    "timestamp": "2026-05-01T06:57:38.995177Z"
+  },
+  {
+    "insertId": "69f44ee2000f2f65a38e87de",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "-> Applied to database : -1518808887",
+    "timestamp": "2026-05-01T06:57:38.995173Z"
+  },
+  {
+    "insertId": "69f44ee2000f2f6113e5c731",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Migration checksum mismatch for migration version 1",
+    "timestamp": "2026-05-01T06:57:38.995169Z"
+  },
+  {
+    "insertId": "69f44ee2000f2f599db6348a",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:38.996 WARN  [main] [] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Failed to initialize dependency 'flywayInitializer' of LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Validate failed: Migrations have failed validation",
+    "timestamp": "2026-05-01T06:57:38.995161Z"
+  },
+  {
+    "insertId": "69f44ee2000d9c98b8c2c8ac",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:38.893 INFO  [main] [] org.flywaydb.core.FlywayExecutor - Database: jdbc:postgresql:///postgres (PostgreSQL 16.13)",
+    "timestamp": "2026-05-01T06:57:38.892056Z"
+  },
+  {
+    "insertId": "69f44ee2000d06a2e1f91af8",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:38.855 INFO  [main] [] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.",
+    "timestamp": "2026-05-01T06:57:38.853666Z"
+  },
+  {
+    "insertId": "69f44ee2000cff0f710eacb8",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:39.159528010Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:38.852 INFO  [main] [] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@27746c5e",
+    "timestamp": "2026-05-01T06:57:38.851727Z"
+  },
+  {
+    "insertId": "69f44ee10002ab1016336f37",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:37.493958846Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:37.175 INFO  [main] [] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...",
+    "timestamp": "2026-05-01T06:57:37.174864Z"
+  },
+  {
+    "insertId": "69f44ee0000a84e423b181e4",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:36.827799915Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:36.690 INFO  [main] [] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3319 ms",
+    "timestamp": "2026-05-01T06:57:36.689380Z"
+  },
+  {
+    "insertId": "69f44ee0000a80002a015e6f",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:36.827799915Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:36.689 INFO  [main] [] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext",
+    "timestamp": "2026-05-01T06:57:36.688128Z"
+  },
+  {
+    "insertId": "69f44ee00009f4355fb80d3b",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:36.827799915Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:36.653 INFO  [main] [] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.48]",
+    "timestamp": "2026-05-01T06:57:36.652341Z"
+  },
+  {
+    "insertId": "69f44ee00009f3858231514f",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:36.827799915Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:36.653 INFO  [main] [] o.a.catalina.core.StandardService - Starting service [Tomcat]",
+    "timestamp": "2026-05-01T06:57:36.652165Z"
+  },
+  {
+    "insertId": "69f44ee00009b2c4ff86b1fd",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:36.827799915Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:36.636 INFO  [main] [] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)",
+    "timestamp": "2026-05-01T06:57:36.635588Z"
+  },
+  {
+    "insertId": "69f44edf000be26f3bc835f1",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:35.828716153Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:35.780 INFO  [main] [] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 203 ms. Found 4 JPA repository interfaces.",
+    "timestamp": "2026-05-01T06:57:35.778863Z"
+  },
+  {
+    "insertId": "69f44edf00089dd7beb13c10",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:35.828716153Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:35.566 INFO  [main] [] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.",
+    "timestamp": "2026-05-01T06:57:35.564695Z"
+  },
+  {
+    "insertId": "69f44edf0008959ed2e8a3ae",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:35.828716153Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:35.564 INFO  [main] [] o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode",
+    "timestamp": "2026-05-01T06:57:35.562590Z"
+  },
+  {
+    "insertId": "69f44edd00036c50e1ca8a81",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:33.496452889Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:33.225 INFO  [main] [] s.t.gamestudio.FloodFillApplication - The following 1 profile is active: \"gcp\"",
+    "timestamp": "2026-05-01T06:57:33.224336Z"
+  },
+  {
+    "insertId": "69f44edd0003673da83a5ec3",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:33.496452889Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026-05-01 06:57:33.222 INFO  [main] [] s.t.gamestudio.FloodFillApplication - Starting FloodFillApplication v5.0.0-SNAPSHOT using Java 21.0.10 with PID 1 (/app/app.jar started by root in /app)",
+    "timestamp": "2026-05-01T06:57:33.223037Z"
+  },
+  {
+    "insertId": "69f44edd000147aeaa8e48ad",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:33.163640034Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": " :: Spring Boot ::                (v3.5.7)",
+    "timestamp": "2026-05-01T06:57:33.083886Z"
+  },
+  {
+    "insertId": "69f44edd000145c7e85e5c10",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:33.163640034Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": " =========|_|==============|___/=/_/_/_/",
+    "timestamp": "2026-05-01T06:57:33.083399Z"
+  },
+  {
+    "insertId": "69f44edd000145c3b761ec33",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:33.163640034Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "  '  |____| .__|_| |_|_| |_\\__, | / / / /",
+    "timestamp": "2026-05-01T06:57:33.083395Z"
+  },
+  {
+    "insertId": "69f44edd000145c1ef8df448",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:33.163640034Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": " \\\\/  ___)| |_)| | | | | || (_| |  ) ) ) )",
+    "timestamp": "2026-05-01T06:57:33.083393Z"
+  },
+  {
+    "insertId": "69f44edd000145bcaa5c0a46",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:33.163640034Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "( ( )\\___ | '_ | '_| | '_ \\/ _` | \\ \\ \\ \\",
+    "timestamp": "2026-05-01T06:57:33.083388Z"
+  },
+  {
+    "insertId": "69f44edd000145b9de5703bc",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:33.163640034Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": " /\\\\ / ___'_ __ _ _(_)_ __  __ _ \\ \\ \\ \\",
+    "timestamp": "2026-05-01T06:57:33.083385Z"
+  },
+  {
+    "insertId": "69f44edd000145acd49da0ea",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:33.163640034Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "  .   ____          _            __ _ _",
+    "timestamp": "2026-05-01T06:57:33.083372Z"
+  },
+  {
+    "insertId": "69f44eda000ca72cf51f39d0",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-05-01T06:57:30.832275629Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[startup] host=0.0.0.0 port=8080 profile=gcp",
+    "timestamp": "2026-05-01T06:57:30.829228Z"
+  },
+  {
+    "insertId": "69f44ed9000c548cb45d875d",
+    "labels": {
+      "instanceId": "0007b734d9b58f85e5c0afafae13c8f17102ff6c8e9b415ff5f43c6359247a52deaabe5abd72571446c5305331f85ffc802e37f69a34b04036f1d2a21dcb1b7e8a85fc25409d385b89f0431711004eb73671201aab648a897f4445",
+      "scaling_reason": "DEPLOYMENT_ROLLOUT"
+    },
+    "logName": "projects/project-d8c92b26-085d-46d0-a85/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-05-01T06:57:29.811494228Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "flood-fill",
+        "location": "europe-west1",
+        "project_id": "project-d8c92b26-085d-46d0-a85",
+        "revision_name": "flood-fill-00067-tfz",
+        "service_name": "flood-fill"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Starting new instance. Reason: DEPLOYMENT_ROLLOUT - Instance started due to traffic shifting between revisions due to deployment, traffic split adjustment, or deployment health check.",
+    "timestamp": "2026-05-01T06:57:29.808076Z"
+  }
+]

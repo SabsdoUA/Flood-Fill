@@ -574,11 +574,18 @@ Pred spustením overte, že v projekte existujú secret-y:
 - `GOOGLE_CLIENT_SECRET`
 - `MAIL_PASSWORD`
 - `APP_REMEMBER_ME_KEY`
+- `REDIS_PASSWORD`
 
 Nasadenie:
 
 ```powershell
 ./deploy/deploy-cloudrun.ps1
+```
+
+Ak Cloud Run padá na `FlywayValidateException` s hláškou o `Migration checksum mismatch`, znamená to, že už aplikovaná verzovaná migrácia bola v repozitári neskôr zmenená. V tom prípade najprv zarovnaj `flyway_schema_history` s aktuálnym stavom migrácií:
+
+```powershell
+./deploy/repair-flyway.ps1 repair
 ```
 
 ## Štruktúra repozitára
