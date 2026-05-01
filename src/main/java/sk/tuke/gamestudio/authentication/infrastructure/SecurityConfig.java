@@ -46,6 +46,8 @@ import sk.tuke.gamestudio.authentication.core.model.AuthProvider;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.URI;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -81,7 +83,9 @@ public class SecurityConfig {
     @Value("${app.frontend-url:http://localhost:5173}")
     private String frontendUrl;
 
-    @Value("${app.auth.remember-me.key}")
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+
+    @Value("${app.auth.remember-me.key:}")
     private String rememberMeKey;
 
     @Value("${app.auth.remember-me.cookie-name:FF_REMEMBER_ME}")
@@ -130,8 +134,9 @@ public class SecurityConfig {
             UserDetailsService userDetailsService,
             PersistentTokenRepository persistentTokenRepository
     ) {
+        String effectiveRememberMeKey = resolveRememberMeKey();
         var services = new PersistentTokenBasedRememberMeServices(
-                rememberMeKey,
+                effectiveRememberMeKey,
                 userDetailsService,
                 persistentTokenRepository
         );
@@ -141,6 +146,18 @@ public class SecurityConfig {
         services.setTokenValiditySeconds(rememberMeTokenValiditySeconds);
         services.setUseSecureCookie(rememberMeSecureCookie);
         return services;
+    }
+
+    private String resolveRememberMeKey() {
+        if (StringUtils.hasText(rememberMeKey)) {
+            return rememberMeKey;
+        }
+
+        byte[] generatedKey = new byte[32];
+        SECURE_RANDOM.nextBytes(generatedKey);
+        rememberMeKey = Base64.getUrlEncoder().withoutPadding().encodeToString(generatedKey);
+        log.warn("APP_REMEMBER_ME_KEY is not configured. Generated an in-memory remember-me key; existing remember-me sessions will not survive restart.");
+        return rememberMeKey;
     }
 
     @Bean

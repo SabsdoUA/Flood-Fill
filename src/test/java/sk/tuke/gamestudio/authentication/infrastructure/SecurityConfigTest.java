@@ -153,6 +153,27 @@ class SecurityConfigTest {
     }
 
     @Test
+    void givenMissingRememberMeKey_whenBuildRememberMeServices_thenGenerateOne() {
+        ReflectionTestUtils.setField(config, "rememberMeKey", "");
+        ReflectionTestUtils.setField(config, "rememberMeCookieName", "FF_REMEMBER_ME");
+        ReflectionTestUtils.setField(config, "rememberMeTokenValiditySeconds", 2592000);
+        ReflectionTestUtils.setField(config, "rememberMeSecureCookie", false);
+        ReflectionTestUtils.setField(config, "rememberMeAlwaysRemember", false);
+
+        UserDetailsService service = username -> org.springframework.security.core.userdetails.User
+                .withUsername(username)
+                .password("hash")
+                .authorities("ROLE_USER")
+                .build();
+
+        PersistentTokenBasedRememberMeServices rememberMeServices = config.rememberMeServices(service, persistentTokenRepository);
+
+        assertThat(ReflectionTestUtils.getField(rememberMeServices, "key"))
+                .asString()
+                .isNotBlank();
+    }
+
+    @Test
     void givenDataSource_whenBuildPersistentTokenRepository_thenReturnJdbcRepository() {
         PersistentTokenRepository repository = config.persistentTokenRepository(dataSource);
 
