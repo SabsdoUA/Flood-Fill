@@ -21,6 +21,7 @@ import sk.tuke.gamestudio.authentication.api.dto.ResendVerificationRequest;
 import sk.tuke.gamestudio.authentication.api.dto.ResetPasswordRequest;
 import sk.tuke.gamestudio.authentication.core.model.User;
 import sk.tuke.gamestudio.authentication.core.service.UserService;
+import sk.tuke.gamestudio.authentication.infrastructure.AuthRateLimiter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -34,6 +35,7 @@ class AuthControllerTest {
     @Mock private HttpSession session;
     @Mock private SessionRegistry sessionRegistry;
     @Mock private PersistentTokenBasedRememberMeServices rememberMeServices;
+    @Mock private AuthRateLimiter authRateLimiter;
 
     @InjectMocks private AuthController controller;
 
@@ -49,9 +51,10 @@ class AuthControllerTest {
         RegisterRequest request = new RegisterRequest();
         when(userService.register(request)).thenReturn("Registrácia úspešná");
 
-        String result = controller.register(request);
+        String result = controller.register(request, httpRequest);
 
         assertThat(result).isEqualTo("Registrácia úspešná");
+        verify(authRateLimiter).check(AuthRateLimiter.Bucket.REGISTER, httpRequest, request.getEmail());
         verify(userService).register(request);
     }
 
@@ -68,6 +71,7 @@ class AuthControllerTest {
         String result = controller.login(request, httpRequest, httpResponse);
 
         assertThat(result).isEqualTo("Prihlásenie úspešné");
+        verify(authRateLimiter).check(AuthRateLimiter.Bucket.LOGIN, httpRequest, request.getEmail());
         verify(session).setAttribute(eq(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY), any());
         verify(sessionRegistry).registerNewSession(session.getId(), "user@gmail.com");
         verify(rememberMeServices).loginSuccess(httpRequest, httpResponse, SecurityContextHolder.getContext().getAuthentication());
@@ -103,17 +107,19 @@ class AuthControllerTest {
         ResendVerificationRequest request = new ResendVerificationRequest();
         request.setEmail("user@gmail.com");
 
-        String result = controller.resendVerification(request);
+        String result = controller.resendVerification(request, httpRequest);
 
         assertThat(result).isEqualTo("Overovací email bol odoslaný");
+        verify(authRateLimiter).check(AuthRateLimiter.Bucket.RESEND_VERIFICATION, httpRequest, request.getEmail());
         verify(userService).resendVerification("user@gmail.com");
     }
 
     @Test
     void givenValidToken_whenValidateResetToken_thenReturnOk() {
-        var response = controller.validateResetToken("reset-token");
+        var response = controller.validateResetToken("reset-token", httpRequest);
 
         assertThat(response.getStatusCode().value()).isEqualTo(200);
+        verify(authRateLimiter).check(AuthRateLimiter.Bucket.VALIDATE_RESET_TOKEN, httpRequest, "reset-token");
         verify(userService).validateResetToken("reset-token");
     }
 
@@ -122,9 +128,10 @@ class AuthControllerTest {
         ForgotPasswordRequest request = new ForgotPasswordRequest();
         request.setEmail("user@gmail.com");
 
-        String result = controller.forgotPassword(request);
+        String result = controller.forgotPassword(request, httpRequest);
 
         assertThat(result).isEqualTo("Ak účet existuje, pošleme vám email na obnovu hesla");
+        verify(authRateLimiter).check(AuthRateLimiter.Bucket.FORGOT_PASSWORD, httpRequest, request.getEmail());
         verify(userService).forgotPassword("user@gmail.com");
     }
 
@@ -134,9 +141,10 @@ class AuthControllerTest {
         request.setToken("token-123");
         request.setNewPassword("NewStrongPass1!");
 
-        String result = controller.resetPassword(request);
+        String result = controller.resetPassword(request, httpRequest);
 
         assertThat(result).isEqualTo("Heslo bolo úspešne zmenené");
+        verify(authRateLimiter).check(AuthRateLimiter.Bucket.RESET_PASSWORD, httpRequest, request.getToken());
         verify(userService).resetPassword("token-123", "NewStrongPass1!");
     }
 }

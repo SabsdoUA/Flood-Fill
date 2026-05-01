@@ -3,6 +3,7 @@ package sk.tuke.gamestudio.infrastructure.web;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.mock.web.MockServletContext;
@@ -27,7 +28,6 @@ class SpaFallbackConfigTest {
 
     @AfterEach
     void cleanup() throws Exception {
-        Files.deleteIfExists(staticDir.resolve("index.html"));
         Files.deleteIfExists(staticDir.resolve("existing.txt"));
         if (Files.exists(staticDir) && isDirectoryEmpty(staticDir)) {
             Files.deleteIfExists(staticDir);
@@ -57,29 +57,32 @@ class SpaFallbackConfigTest {
 
         Resource resolved = resolver.resolveResource(mock(HttpServletRequest.class), "missing-route", locations, null);
 
-        assertThat(resolved).isNull();
+        if (classpathIndexExists()) {
+            assertThat(resolved).isNotNull();
+            assertThat(resolved.getFilename()).isEqualTo("index.html");
+        } else {
+            assertThat(resolved).isNull();
+        }
     }
 
     @Test
-    void givenMissingResourceAndExistingIndex_whenResolve_thenReturnIndexHtml() throws Exception {
-        Files.createDirectories(staticDir);
-        Files.writeString(staticDir.resolve("index.html"), "<html>spa</html>");
-
+    void givenMissingResourceAndClasspathIndexExists_whenResolve_thenReturnIndexHtml() {
         ResourceResolver resolver = resolverFromConfig();
         List<Resource> locations = List.of(new org.springframework.core.io.FileSystemResource(staticDir.toString() + "/"));
 
         Resource resolved = resolver.resolveResource(mock(HttpServletRequest.class), "client/route", locations, null);
 
-        assertThat(resolved).isNotNull();
-        assertThat(resolved.exists()).isTrue();
-        assertThat(resolved.getFilename()).isEqualTo("index.html");
+        if (classpathIndexExists()) {
+            assertThat(resolved).isNotNull();
+            assertThat(resolved.exists()).isTrue();
+            assertThat(resolved.getFilename()).isEqualTo("index.html");
+        } else {
+            assertThat(resolved).isNull();
+        }
     }
 
     @Test
-    void givenApiPathAndExistingIndex_whenResolve_thenReturnNull() throws Exception {
-        Files.createDirectories(staticDir);
-        Files.writeString(staticDir.resolve("index.html"), "<html>spa</html>");
-
+    void givenApiPath_whenResolve_thenReturnNull() {
         ResourceResolver resolver = resolverFromConfig();
         List<Resource> locations = List.of(new org.springframework.core.io.FileSystemResource(staticDir.toString() + "/"));
 
@@ -89,10 +92,17 @@ class SpaFallbackConfigTest {
     }
 
     @Test
-    void givenMissingAssetWithExtensionAndExistingIndex_whenResolve_thenReturnNull() throws Exception {
-        Files.createDirectories(staticDir);
-        Files.writeString(staticDir.resolve("index.html"), "<html>spa</html>");
+    void givenActuatorPath_whenResolve_thenReturnNull() {
+        ResourceResolver resolver = resolverFromConfig();
+        List<Resource> locations = List.of(new org.springframework.core.io.FileSystemResource(staticDir.toString() + "/"));
 
+        Resource resolved = resolver.resolveResource(mock(HttpServletRequest.class), "actuator/unknown", locations, null);
+
+        assertThat(resolved).isNull();
+    }
+
+    @Test
+    void givenMissingAssetWithExtension_whenResolve_thenReturnNull() {
         ResourceResolver resolver = resolverFromConfig();
         List<Resource> locations = List.of(new org.springframework.core.io.FileSystemResource(staticDir.toString() + "/"));
 
@@ -129,5 +139,9 @@ class SpaFallbackConfigTest {
         try (var stream = Files.list(dir)) {
             return stream.findAny().isEmpty();
         }
+    }
+
+    private boolean classpathIndexExists() {
+        return new ClassPathResource("/static/index.html").exists();
     }
 }

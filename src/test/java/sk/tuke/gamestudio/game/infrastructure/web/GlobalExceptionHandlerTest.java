@@ -26,7 +26,8 @@ class GlobalExceptionHandlerTest {
                 new GameDomainException.AlreadyWon(),
                 new GameDomainException.MoveLimitReached(),
                 new GameDomainException.InvalidColor("pink"),
-                new GameDomainException.InvalidSize(0)
+                new GameDomainException.InvalidSize(0),
+                new GameDomainException.StoreUnavailable()
         );
     }
 
@@ -37,6 +38,7 @@ class GlobalExceptionHandlerTest {
 
         HttpStatus expected = ex instanceof GameDomainException.NotFound ? HttpStatus.NOT_FOUND
                 : ex instanceof GameDomainException.Forbidden ? HttpStatus.FORBIDDEN
+                : ex instanceof GameDomainException.StoreUnavailable ? HttpStatus.SERVICE_UNAVAILABLE
                 : HttpStatus.BAD_REQUEST;
         assertThat(entity.getStatusCode()).isEqualTo(expected);
         assertThat(entity.getBody().status()).isEqualTo("ERROR");

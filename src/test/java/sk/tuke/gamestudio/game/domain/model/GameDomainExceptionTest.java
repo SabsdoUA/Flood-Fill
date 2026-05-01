@@ -14,5 +14,6 @@ class GameDomainExceptionTest {
         assertThat(new GameDomainException.MoveLimitReached()).hasMessage("Move limit reached");
         assertThat(new GameDomainException.InvalidColor("pink")).hasMessage("Invalid color: pink");
         assertThat(new GameDomainException.InvalidSize(0)).hasMessage("Invalid board size: 0");
+        assertThat(new GameDomainException.StoreUnavailable()).hasMessage("Game state store is unavailable");
     }
 }

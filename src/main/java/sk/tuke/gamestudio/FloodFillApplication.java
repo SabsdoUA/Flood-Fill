@@ -38,7 +38,7 @@ public class FloodFillApplication {
     }
 
     @Bean
-    org.springframework.boot.CommandLineRunner checkRedis(StringRedisTemplate redisTemplate) {
+    org.springframework.boot.CommandLineRunner checkRedis(StringRedisTemplate redisTemplate, Environment environment) {
         return args -> {
             try {
                 String pong = redisTemplate.getConnectionFactory()
@@ -46,6 +46,10 @@ public class FloodFillApplication {
                         .ping();
                 log.info("Redis ping result: {}", pong);
             } catch (Exception e) {
+                boolean failFast = environment.getProperty("app.redis.fail-fast", Boolean.class, false);
+                if (failFast) {
+                    throw new IllegalStateException("Redis ping failed during startup", e);
+                }
                 log.warn("Redis ping failed during startup (non-fatal): {}", e.getMessage());
             }
         };

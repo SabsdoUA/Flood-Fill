@@ -2,7 +2,6 @@ import { defineConfig, loadEnv, type ProxyOptions } from 'vite';
 import react from '@vitejs/plugin-react';
 
 const HTTP_PROXY_PATHS = ['/auth', '/oauth2', '/secured', '/logout', '/api'] as const;
-const WS_PROXY_PATHS   = ['/ws-game'] as const;
 
 type ProxyEntry = ProxyOptions;
 
@@ -42,26 +41,23 @@ export default defineConfig(({ mode }) => {
 
     const proxy: Record<string, ProxyEntry> = {
         ...toProxyEntries(HTTP_PROXY_PATHS, backendUrl),
-        ...toProxyEntries(WS_PROXY_PATHS,   backendUrl, { ws: true }),
     };
 
     return {
         plugins: [react()],
-        define: { global: 'globalThis' },
         optimizeDeps: {
-            include: ['react', 'react-dom', '@stomp/stompjs', 'sockjs-client'],
+            include: ['react', 'react-dom'],
         },
         server:  { port: devPort, proxy },
         preview: { port: devPort },
         build: {
             target:                 'es2020',
-            sourcemap:              isProd ? 'hidden' : true,
+            sourcemap:              !isProd,
             chunkSizeWarningLimit:  600,
             rollupOptions: {
                 output: {
                     manualChunks: {
                         'vendor-react': ['react', 'react-dom'],
-                        'vendor-stomp': ['@stomp/stompjs', 'sockjs-client'],
                     },
                     chunkFileNames: 'assets/[name]-[hash].js',
                     entryFileNames: 'assets/[name]-[hash].js',

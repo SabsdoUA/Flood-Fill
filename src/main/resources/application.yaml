@@ -87,7 +87,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME:goserhiisubbotin@gmail.com}
+    username: ${MAIL_USERNAME:}
     password: ${MAIL_PASSWORD}
     properties:
       mail.smtp.auth: true
@@ -98,14 +98,19 @@ app:
   base-url: ${APP_BASE_URL:https://flood-fill-896272314633.europe-west1.run.app}
   frontend-url: ${APP_FRONTEND_URL:https://flood-fill-896272314633.europe-west1.run.app}
   cors-allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:https://flood-fill-896272314633.europe-west1.run.app}
+  redis:
+    fail-fast: ${APP_REDIS_FAIL_FAST:false}
+  game:
+    local-state-fallback-enabled: ${APP_GAME_LOCAL_STATE_FALLBACK_ENABLED:true}
   auth:
     remember-me:
       key: ${APP_REMEMBER_ME_KEY}
       cookie-name: ${APP_REMEMBER_ME_COOKIE_NAME:FF_REMEMBER_ME}
       token-validity-seconds: ${APP_REMEMBER_ME_TOKEN_VALIDITY_SECONDS:2592000}
       secure-cookie: ${APP_REMEMBER_ME_SECURE_COOKIE:false}
+      always-remember: ${APP_REMEMBER_ME_ALWAYS_REMEMBER:false}
   mail:
-    from: ${MAIL_FROM:goserhiisubbotin@gmail.com}
+    from: ${MAIL_FROM:${MAIL_USERNAME:}}
     allow-log-fallback: false
 
 # ── Actuator ────────────────────────────────────────────────────────────────
@@ -142,9 +147,6 @@ spring:
 
 logging:
   level:
-    org.springframework.boot.devtools: DEBUG
-    org.springframework.boot.devtools.autoconfigure: DEBUG
-    org.springframework.boot.devtools.restart: DEBUG
     org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger: INFO
 ---
 spring:
@@ -173,6 +175,10 @@ spring:
       host: ${REDIS_HOST:10.37.188.235}
       port: ${REDIS_PORT:6379}
 app:
+  redis:
+    fail-fast: ${APP_REDIS_FAIL_FAST:true}
+  game:
+    local-state-fallback-enabled: ${APP_GAME_LOCAL_STATE_FALLBACK_ENABLED:false}
   auth:
     remember-me:
       secure-cookie: ${APP_REMEMBER_ME_SECURE_COOKIE:true}

@@ -89,7 +89,10 @@ class FloodFillApplicationTest {
         when(connectionFactory.getConnection()).thenReturn(connection);
         when(connection.ping()).thenReturn("PONG");
 
-        CommandLineRunner runner = app.checkRedis(redisTemplate);
+        Environment environment = mock(Environment.class);
+        when(environment.getProperty("app.redis.fail-fast", Boolean.class, false)).thenReturn(false);
+
+        CommandLineRunner runner = app.checkRedis(redisTemplate, environment);
         runner.run();
 
         verify(connection).ping();
@@ -106,9 +109,32 @@ class FloodFillApplicationTest {
         when(connectionFactory.getConnection()).thenReturn(connection);
         when(connection.ping()).thenThrow(new RuntimeException("redis down"));
 
-        CommandLineRunner runner = app.checkRedis(redisTemplate);
+        Environment environment = mock(Environment.class);
+        when(environment.getProperty("app.redis.fail-fast", Boolean.class, false)).thenReturn(false);
+
+        CommandLineRunner runner = app.checkRedis(redisTemplate, environment);
         runner.run();
 
         verify(connection).ping();
+    }
+
+    @Test
+    void givenRedisPingFailsAndFailFastEnabled_whenCheckRedisRuns_thenThrow() throws Exception {
+        FloodFillApplication app = new FloodFillApplication();
+        StringRedisTemplate redisTemplate = mock(StringRedisTemplate.class);
+        RedisConnectionFactory connectionFactory = mock(RedisConnectionFactory.class);
+        RedisConnection connection = mock(RedisConnection.class);
+        Environment environment = mock(Environment.class);
+
+        when(redisTemplate.getConnectionFactory()).thenReturn(connectionFactory);
+        when(connectionFactory.getConnection()).thenReturn(connection);
+        when(connection.ping()).thenThrow(new RuntimeException("redis down"));
+        when(environment.getProperty("app.redis.fail-fast", Boolean.class, false)).thenReturn(true);
+
+        CommandLineRunner runner = app.checkRedis(redisTemplate, environment);
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(runner::run)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Redis ping failed");
     }
 }

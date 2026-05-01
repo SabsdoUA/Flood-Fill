@@ -32,8 +32,11 @@ public class FeedbackController {
     }
 
     @GetMapping
-    public List<FeedbackResponse> getFeedback() {
-        return feedbackService.getAllFeedback();
+    public List<FeedbackResponse> getFeedback(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "50") int size
+    ) {
+        return feedbackService.getFeedback(page, size);
     }
 
     private String resolveUserEmail(Authentication authentication) {

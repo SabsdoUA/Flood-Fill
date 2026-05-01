@@ -138,10 +138,10 @@ class FeedbackControllerTest {
         List<FeedbackResponse> expected = List.of(
                 new FeedbackResponse(1L, "A", 5, "Top", Instant.now(), LocalDate.now())
         );
-        when(feedbackService.getAllFeedback()).thenReturn(expected);
+        when(feedbackService.getFeedback(0, 50)).thenReturn(expected);
 
         // When
-        List<FeedbackResponse> actual = feedbackController.getFeedback();
+        List<FeedbackResponse> actual = feedbackController.getFeedback(0, 50);
 
         // Then
         assertThat(actual).isEqualTo(expected);

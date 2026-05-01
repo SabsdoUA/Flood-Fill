@@ -1,9 +1,9 @@
 package sk.tuke.gamestudio.game.infrastructure.persistence;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import sk.tuke.gamestudio.game.domain.model.Board;
 import sk.tuke.gamestudio.game.domain.model.Color;
+import sk.tuke.gamestudio.game.domain.model.GameDomainException;
 import sk.tuke.gamestudio.game.domain.model.GameState;
 
 import java.time.Duration;
@@ -32,10 +33,15 @@ class RedisGameAdapterTest {
     @Mock private RedisTemplate<String, String> redis;
     @Mock private ValueOperations<String, String> valueOps;
 
-    @InjectMocks private RedisGameAdapter adapter;
+    private RedisGameAdapter adapter;
 
     private final GameState.Active state =
             new GameState.Active("g1", "qa@example.com", new Board(new Color[][]{{Color.RED}}, 1), 0, 3);
+
+    @BeforeEach
+    void setUp() {
+        adapter = new RedisGameAdapter(redis, true);
+    }
 
     @Test
     void givenState_whenSave_thenSerializeAndStoreWithTtl() {
@@ -166,5 +172,26 @@ class RedisGameAdapterTest {
 
         assertThat(result).contains(state);
         verify(redis).delete("game:g1");
+    }
+
+    @Test
+    void givenRedisUnavailableAndFallbackDisabled_whenSave_thenThrowStoreUnavailable() {
+        adapter = new RedisGameAdapter(redis, false);
+        when(redis.opsForValue()).thenReturn(valueOps);
+        doThrow(new RedisConnectionFailureException("down"))
+                .when(valueOps).set(anyString(), anyString(), any(Duration.class));
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> adapter.save(state))
+                .isInstanceOf(GameDomainException.StoreUnavailable.class);
+    }
+
+    @Test
+    void givenRedisUnavailableAndFallbackDisabled_whenFindById_thenThrowStoreUnavailable() {
+        adapter = new RedisGameAdapter(redis, false);
+        when(redis.opsForValue()).thenReturn(valueOps);
+        when(valueOps.get("game:g1")).thenThrow(new RedisConnectionFailureException("down"));
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> adapter.findById("g1"))
+                .isInstanceOf(GameDomainException.StoreUnavailable.class);
     }
 }

@@ -67,7 +67,7 @@ Backend je modulovaný podľa domén:
 - `feedback` pre komentáre a hodnotenia
 - `infrastructure` pre spoločné webové a logovacie komponenty
 
-Aktuálna verzia hry používa na herné operácie HTTP endpointy. Vo fronte sú prítomné závislosti a proxy nastavenie pre WebSocket/STOMP, ale herný tok je v súčasnom stave projektu postavený na HTTP.
+Aktuálna verzia hry používa na herné operácie HTTP endpointy.
 
 ## Technologický stack
 
@@ -99,7 +99,6 @@ Aktuálna verzia hry používa na herné operácie HTTP endpointy. Vo fronte sú
 - `PostgreSQL`
 - `Redis`
 - `Caffeine`
-- `MapStruct`
 - `Lombok`
 
 ### Frontend
@@ -108,15 +107,11 @@ Aktuálna verzia hry používa na herné operácie HTTP endpointy. Vo fronte sú
   <img src="https://img.shields.io/badge/React-18-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React 18" />
   <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript 5" />
   <img src="https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite 6" />
-  <img src="https://img.shields.io/badge/STOMP-ready-4B5563?style=flat-square&logo=socketdotio&logoColor=white" alt="STOMP client" />
-  <img src="https://img.shields.io/badge/SockJS-client-4B5563?style=flat-square&logo=socket.io&logoColor=white" alt="SockJS client" />
 </p>
 
 - `React 18`
 - `TypeScript 5`
 - `Vite 6`
-- `@stomp/stompjs`
-- `sockjs-client`
 
 ### Build a runtime
 

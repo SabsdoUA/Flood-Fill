@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/game")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class GameController {
 

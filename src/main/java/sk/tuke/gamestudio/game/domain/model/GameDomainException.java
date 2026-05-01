@@ -6,7 +6,8 @@ public abstract sealed class GameDomainException extends RuntimeException
         GameDomainException.AlreadyWon,
         GameDomainException.MoveLimitReached,
         GameDomainException.InvalidColor,
-        GameDomainException.InvalidSize {
+        GameDomainException.InvalidSize,
+        GameDomainException.StoreUnavailable {
 
     private GameDomainException(String message) {
         super(message);
@@ -45,6 +46,12 @@ public abstract sealed class GameDomainException extends RuntimeException
     public static final class InvalidSize extends GameDomainException {
         public InvalidSize(int size) {
             super("Invalid board size: " + size);
+        }
+    }
+
+    public static final class StoreUnavailable extends GameDomainException {
+        public StoreUnavailable() {
+            super("Game state store is unavailable");
         }
     }
 }

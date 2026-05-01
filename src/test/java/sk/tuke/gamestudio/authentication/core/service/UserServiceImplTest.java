@@ -104,7 +104,11 @@ class UserServiceImplTest {
         String result = service.register(req);
 
         assertThat(result).startsWith("Registrácia úspešná");
-        verify(userRepository).save(any(User.class));
+        verify(userRepository).save(argThat(user ->
+                user.getVerificationToken() != null
+                        && !user.getVerificationToken().equals("StrongPass1")
+                        && user.getVerificationToken().length() == 64
+        ));
         verify(emailDeliveryService).sendEmailVerification(eq("user@gmail.com"), eq("Nick"), any(String.class));
     }
 
@@ -269,11 +273,12 @@ class UserServiceImplTest {
         user.setResetToken("token");
         user.setResetTokenExpiresAt(java.time.Instant.now().plusSeconds(60));
 
-        when(userRepository.findByResetToken("token")).thenReturn(Optional.of(user));
+        when(userRepository.findByResetToken(anyString())).thenReturn(Optional.of(user));
         when(passwordEncoder.encode("NewStrongPass1!")).thenReturn("new-hash");
 
         service.resetPassword("token", "NewStrongPass1!");
 
+        assertThat(user.getResetToken()).isNull();
         verify(persistentTokenRepository).removeUserTokens("user@gmail.com");
     }
 

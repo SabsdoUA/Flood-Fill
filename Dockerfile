@@ -13,7 +13,7 @@ RUN mvn -q -DskipTests dependency:go-offline
 
 COPY src ./src
 COPY --from=frontend-build /app/frontend/dist ./src/main/resources/static
-RUN mvn -q -DskipTests package
+RUN mvn -q -DskipTests -Dskip.frontend.build=true package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app

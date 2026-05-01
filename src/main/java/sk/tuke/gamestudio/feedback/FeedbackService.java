@@ -1,6 +1,7 @@
 package sk.tuke.gamestudio.feedback;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,6 +20,8 @@ import java.util.List;
 public class FeedbackService {
 
     private static final Duration COMMENT_COOLDOWN = Duration.ofHours(24);
+    private static final int DEFAULT_FEEDBACK_PAGE_SIZE = 50;
+    private static final int MAX_FEEDBACK_PAGE_SIZE = 100;
 
     private final FeedbackRepository feedbackRepository;
     private final UserRepository userRepository;
@@ -41,7 +44,14 @@ public class FeedbackService {
     }
 
     public List<FeedbackResponse> getAllFeedback() {
-        return feedbackRepository.findAllByOrderByCreatedAtAsc().stream()
+        return getFeedback(0, DEFAULT_FEEDBACK_PAGE_SIZE);
+    }
+
+    public List<FeedbackResponse> getFeedback(int page, int size) {
+        int normalizedPage = Math.max(page, 0);
+        int normalizedSize = Math.min(Math.max(size, 1), MAX_FEEDBACK_PAGE_SIZE);
+
+        return feedbackRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(normalizedPage, normalizedSize)).stream()
                 .map(this::toResponse)
                 .toList();
     }

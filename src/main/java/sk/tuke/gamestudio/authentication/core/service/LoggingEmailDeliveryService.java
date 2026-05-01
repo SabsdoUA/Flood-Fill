@@ -5,7 +5,6 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -80,20 +79,6 @@ public class LoggingEmailDeliveryService implements EmailDeliveryService {
             log.info("HTML email sent successfully to {} with subject '{}'", to, subject);
         } catch (MessagingException | MailException e) {
             handleFailure(to, subject, textFallback, e.getMessage());
-        }
-    }
-
-    private void sendOrLog(String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        if (!fromAddress.isEmpty()) message.setFrom(fromAddress);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        try {
-            mailSender.send(message);
-            log.info("Email sent successfully to {} with subject '{}'", to, subject);
-        } catch (MailException ex) {
-            handleFailure(to, subject, body, ex.getMessage());
         }
     }
 

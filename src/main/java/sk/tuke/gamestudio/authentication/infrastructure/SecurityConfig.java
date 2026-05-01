@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -61,14 +62,17 @@ public class SecurityConfig {
             { "/", "/secured", "/auth/register", "/auth/login",
               "/auth/verify-email", "/auth/resend-verification",
               "/auth/forgot-password", "/auth/validate-reset-token", "/auth/reset-password",
-              "/api/hra/**", "/api/game/**", "/api/leaderboard/**", "/api/feedback/**" };
+              "/api/leaderboard/**", "/api/feedback/**" };
 
     private static final String[] PUBLIC_HEALTH_ENDPOINTS =
             { "/actuator/health", "/actuator/health/**" };
 
+    private static final String[] SOURCE_MAP_PATTERNS =
+            { "/*.map", "/assets/**/*.map" };
+
     // Static frontend assets must be public — served from Spring Boot on Cloud Run
     private static final String[] STATIC_RESOURCE_PATTERNS =
-            { "/*.html", "/*.js", "/*.js.map", "/*.css", "/*.ico", "/*.svg",
+            { "/*.html", "/*.js", "/*.css", "/*.ico", "/*.svg",
               "/*.png", "/*.woff", "/*.woff2", "/*.ttf", "/assets/**" };
 
     @Value("${app.cors-allowed-origins}")
@@ -88,6 +92,9 @@ public class SecurityConfig {
 
     @Value("${app.auth.remember-me.secure-cookie:false}")
     private boolean rememberMeSecureCookie;
+
+    @Value("${app.auth.remember-me.always-remember:false}")
+    private boolean rememberMeAlwaysRemember;
 
     @Bean
     public SessionRegistry sessionRegistry() {
@@ -130,7 +137,7 @@ public class SecurityConfig {
         );
         services.setCookieName(rememberMeCookieName);
         services.setParameter("remember-me");
-        services.setAlwaysRemember(true);
+        services.setAlwaysRemember(rememberMeAlwaysRemember);
         services.setTokenValiditySeconds(rememberMeTokenValiditySeconds);
         services.setUseSecureCookie(rememberMeSecureCookie);
         return services;
@@ -169,8 +176,11 @@ public class SecurityConfig {
                         .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/api/game/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/feedback", "/api/leaderboard/win").authenticated()
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(PUBLIC_HEALTH_ENDPOINTS).permitAll()
+                        .requestMatchers(SOURCE_MAP_PATTERNS).denyAll()
                         .requestMatchers(STATIC_RESOURCE_PATTERNS).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

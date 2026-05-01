@@ -2,8 +2,6 @@ import type {CSSProperties, FormEvent, MouseEvent as ReactMouseEvent, ReactEleme
 import {memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState,} from 'react';
 
 import ReactDOM from 'react-dom/client';
-import {Client, IMessage} from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
 // ─── Primitives ───────────────────────────────────────────────────────────────
 type VoidFn = () => void;
 type Mode = 'register' | 'login' | 'forgot-password';
@@ -12,14 +10,6 @@ type Theme = 'dark' | 'light';
 type MobileTab = 'game' | 'rules' | 'comments' | 'leaderboard';
 
 type ApiErrorBody = Partial<Record<'error' | 'message' | 'errors', unknown>>;
-
-type WebSocketOptions = Readonly<{
-    authorized: boolean;
-    gameSize: GameSize;
-    onGameUpdate: (game: UiGameState, size: GameSize) => void;
-    onError: (message: string) => void;
-    onConnectionChange: (connected: boolean) => void;
-}>;
 
 type ServerGameState = {
     grid: string[][] | null;
@@ -121,7 +111,7 @@ type BoardProps = Readonly<{
 
 type BoardPanelProps = Readonly<{
     theme: Theme; game: UiGameState | null; gameSize: GameSize;
-    connected: boolean; msg: string;
+    msg: string;
     cellSize: number; boardBoxSize: number; boardWrapRef: RefObject<HTMLDivElement>; colorMap: Record<string, string>;
     onSizeChange: (sz: GameSize) => void; onNewGame: VoidFn; onMove: (color: string) => void;
 }>;
@@ -195,13 +185,11 @@ const THEME_STORAGE_ID = 'flood_fill_theme';
 const API_FB = '/api/feedback';
 const CSRF_COOKIE_NAME = 'XSRF-TOKEN';
 const CSRF_HEADER_NAME = 'X-XSRF-TOKEN';
-const WS_GAME_ENABLED = (globalThis as { __FF_WS_ENABLED__?: boolean }).__FF_WS_ENABLED__ ?? false;
 const AUTHENTICATED_USER_PREFIX = 'Prihlásený používateľ:';
 
 const HEADERS = ['№', 'Hráč', 'M', 'S', 'V'] as const;
 const VALID_SIZES = [12, 15, 18] as const satisfies GameSize[];
 const STAR_VALUES = [1, 2, 3, 4, 5] as const;
-const NOOP = () => {};
 
 const sizeLabel = (size: GameSize): string =>
     size === 12 ? 'Malá (12×12)' : size === 15 ? 'Stredná (15×15)' : 'Veľká (18×18)';
@@ -715,80 +703,6 @@ const useLeaderboard = () => {
     return { leaderboard, lbError, load } as const;
 };
 
-const useWebSocket = ({ authorized, gameSize, onGameUpdate, onError, onConnectionChange }: WebSocketOptions) => {
-    const clientRef = useRef<Client | null>(null);
-    const gameIdRef = useRef('');
-    const sizeRef = useRef<GameSize>(gameSize);
-    const cbRef = useRef({ onGameUpdate, onError, onConnectionChange });
-    const [connected, setConnected] = useState(false);
-
-    useLayoutEffect(() => {
-        cbRef.current = { onGameUpdate, onError, onConnectionChange };
-    });
-
-    useEffect(() => {
-        sizeRef.current = gameSize;
-    }, [gameSize]);
-
-    const publish = useCallback((dest: string, body: object) =>
-        clientRef.current?.publish({ destination: dest, body: JSON.stringify(body) }), []);
-
-    const startGame = useCallback((size: GameSize) =>
-        publish(`/app/game/${gameIdRef.current}/start`, { size }), [publish]);
-
-    const sendMove = useCallback((color: string) =>
-        publish(`/app/game/${gameIdRef.current}/move`, { color }), [publish]);
-
-    const isConnected = useCallback(() =>
-        Boolean(clientRef.current?.connected && gameIdRef.current), []);
-
-    useEffect(() => {
-        if (!authorized || !WS_GAME_ENABLED) return;
-        const id = getOrCreateGameId();
-        gameIdRef.current = id;
-
-        const client = new Client({
-            webSocketFactory: () => new SockJS(`${location.protocol}//${location.host}/ws-game`),
-            reconnectDelay: 2000,
-            onConnect: () => {
-                setConnected(true);
-                cbRef.current.onConnectionChange(true);
-                cbRef.current.onError('');
-                client.subscribe(`/topic/game/${id}`, (frame: IMessage) => {
-                    const payload = JSON.parse(frame.body) as ServerGameState;
-                    if (payload.error) {
-                        cbRef.current.onError(payload.error);
-                        return;
-                    }
-                    const parsed = parseState(payload);
-                    if (parsed) {
-                        const sz = parsed.grid.length as GameSize;
-                        cbRef.current.onGameUpdate(parsed, VALID_SIZES.includes(sz) ? sz : sizeRef.current);
-                    }
-                });
-                publish(`/app/game/${id}/resume`, { size: sizeRef.current });
-            },
-            onStompError: frame => cbRef.current.onError(frame.headers.message || 'Chyba WebSocket'),
-            onWebSocketClose: () => {
-                setConnected(false);
-                cbRef.current.onConnectionChange(false);
-            },
-        });
-
-        clientRef.current = client;
-        client.activate();
-
-        return () => {
-            clientRef.current = null;
-            setConnected(false);
-            cbRef.current.onConnectionChange(false);
-            void client.deactivate();
-        };
-    }, [authorized, publish]);
-
-    return { connected, isConnected, startGame, sendMove } as const;
-};
-
 const useFeedback = () => {
     const [items, setItems] = useState<FeedbackItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -827,7 +741,7 @@ const useFeedback = () => {
                 return null;
             }
             const created = (await res.json()) as FeedbackItem;
-            setItems(prev => [...prev, created]);
+            setItems(prev => [created, ...prev]);
             return created;
         } catch (e) {
             setError(e instanceof Error ? e.message : 'Nepodarilo sa uložiť komentár');
@@ -1447,7 +1361,7 @@ const AuthForm = memo(({ onAuth }: AuthFormProps) => {
     const onSubmit = (e: FormEvent): void => void submit(e);
 
     const fields = [
-        { label: 'E-mail', val: email, set: setEmail, ph: 'vy@priklad.sk', type: 'email' },
+        { label: 'E-mail', val: email, set: setEmail, ph: 'vy@gmail.com', type: 'email' },
         ...(mode === 'register' ? [{ label: 'Prezývka', val: nick, set: setNick, ph: 'Zobrazované meno', type: 'text' }] : []),
         ...(mode !== 'forgot-password' ? [{ label: 'Heslo', val: pass, set: setPass, ph: '••••••••', type: 'password' }] : []),
     ];
@@ -1963,7 +1877,7 @@ const BottomNav = memo(({ tab, onTab, uiScale, isLandscape }: BottomNavProps) =>
 });
 
 const MobileGameScreen = memo(({
-                                   theme, game, gameSize, connected, cellSize, boardBoxSize, boardWrapRef, msg, colorMap,
+                                   theme, game, gameSize, cellSize, boardBoxSize, boardWrapRef, msg, colorMap,
                                    onSizeChange, onNewGame, onMove, onToggleTheme, onLogout, uiScale, isLandscape,
                                }: MobileGameScreenProps) => {
     const pct = game ? Math.min(1, game.movesTaken / game.moveLimit) : 0;
@@ -2047,7 +1961,7 @@ const MobileGameScreen = memo(({
                     <SizeDropdown value={gameSize} onChange={onSizeChange} fullWidth />
                 </div>
                 <div style={{ flex: '1 1 0', minWidth: 0 }}>
-                    <button type="button" onClick={onNewGame} aria-disabled={!connected} style={newGameBtnStyle}>Nová hra</button>
+                    <button type="button" onClick={onNewGame} style={newGameBtnStyle}>Nová hra</button>
                 </div>
             </div>
 
@@ -2206,7 +2120,7 @@ const CommentsScreen = memo(({ mobile = false, uiScale = 1 }: CommentsScreenProp
 });
 
 const BoardPanel = memo(({
-                             theme, game, gameSize, connected, cellSize, boardBoxSize, boardWrapRef, msg, colorMap,
+                             theme, game, gameSize, cellSize, boardBoxSize, boardWrapRef, msg, colorMap,
                              onSizeChange, onNewGame, onMove,
                          }: BoardPanelProps) => {
     const pct = game ? Math.min(1, game.movesTaken / game.moveLimit) : 0;
@@ -2250,7 +2164,7 @@ const BoardPanel = memo(({
                 </div>
                 <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
                     <SizeDropdown value={gameSize} onChange={onSizeChange} />
-                    <button type="button" onClick={onNewGame} aria-disabled={!connected} style={{ ...btnBase, padding: '7px 14px', background: V.success, color: '#fff' }}>Nová hra</button>
+                    <button type="button" onClick={onNewGame} style={{ ...btnBase, padding: '7px 14px', background: V.success, color: '#fff' }}>Nová hra</button>
                 </div>
             </div>
             <div style={PS.sep} />
@@ -2608,30 +2522,17 @@ const App = () => {
         );
     }, [executeGameRequest]);
 
-    const onGameUpdate = useCallback((updated: UiGameState, detectedSize: GameSize) => {
-        setGame(updated);
-        setGameSize(detectedSize);
-    }, []);
-
-    const { connected, isConnected, startGame: wsStart, sendMove: wsMove } = useWebSocket({
-        authorized, gameSize, onGameUpdate, onError: setMsg, onConnectionChange: NOOP,
-    });
-
     const handleNewGame = useCallback((size: GameSize) => {
         setMsg('');
-        if (isConnected()) {
-            wsStart(size);
-            return;
-        }
         resetGameId();
         void startGameHttp(size);
-    }, [isConnected, wsStart, startGameHttp]);
+    }, [startGameHttp]);
 
     const handleMove = useCallback((color: string) => {
         const g = gameRef.current;
         if (!g || g.isFinished) return;
-        isConnected() ? wsMove(color) : void moveGameHttp(color);
-    }, [isConnected, wsMove, moveGameHttp]);
+        void moveGameHttp(color);
+    }, [moveGameHttp]);
 
     const handleSizeChange = useCallback((sz: GameSize) => {
         setGameSize(sz);
@@ -2652,9 +2553,9 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        if (!authorized || isConnected()) return;
+        if (!authorized) return;
         void resumeGameHttp(gameSizeRef.current);
-    }, [authorized, connected, resumeGameHttp, isConnected]);
+    }, [authorized, resumeGameHttp]);
 
     useEffect(() => {
         void (async () => {
@@ -2724,11 +2625,11 @@ const App = () => {
     }, [authorized, game, loadLeaderboard]);
 
     const gameProps = useMemo(() => ({
-        theme, game, gameSize, connected, cellSize, boardBoxSize, boardWrapRef, msg, colorMap,
+        theme, game, gameSize, cellSize, boardBoxSize, boardWrapRef, msg, colorMap,
         onSizeChange: handleSizeChange,
         onNewGame: () => handleNewGame(gameSizeRef.current),
         onMove: handleMove,
-    }), [theme, game, gameSize, connected, cellSize, boardBoxSize, boardWrapRef, msg, colorMap, handleSizeChange, handleNewGame, handleMove]);
+    }), [theme, game, gameSize, cellSize, boardBoxSize, boardWrapRef, msg, colorMap, handleSizeChange, handleNewGame, handleMove]);
 
     if (resetToken && !resetDone) {
         return <ResetPasswordForm token={resetToken} onDone={() => setResetDone(true)} />;

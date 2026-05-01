@@ -1,13 +1,13 @@
 package sk.tuke.gamestudio.game.application;
 
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 import sk.tuke.gamestudio.game.domain.model.Color;
 import sk.tuke.gamestudio.game.domain.model.GameState;
 
-@Mapper(componentModel = "spring")
-public interface GameStateMapper {
+@Component
+public class GameStateMapper {
 
-    default GameResponse toResponse(GameState state) {
+    public GameResponse toResponse(GameState state) {
         return new GameResponse(
                 state.gameId(),
                 toGrid(state.board().grid()),

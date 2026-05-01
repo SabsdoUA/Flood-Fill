@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import sk.tuke.gamestudio.authentication.core.UserRepository;
@@ -132,7 +133,7 @@ class FeedbackServiceTest {
         Feedback second = feedback("  Alice  ", "b@b.com", 5, null, Instant.parse("2026-01-01T02:00:00Z"), LocalDate.parse("2026-01-01"));
         second.setId(2L);
 
-        when(feedbackRepository.findAllByOrderByCreatedAtAsc()).thenReturn(List.of(first, second));
+        when(feedbackRepository.findAllByOrderByCreatedAtDesc(any(Pageable.class))).thenReturn(List.of(first, second));
 
         // When
         List<FeedbackResponse> responses = feedbackService.getAllFeedback();
@@ -147,13 +148,26 @@ class FeedbackServiceTest {
     @Test
     void givenEmptyRepository_whenGetAllFeedback_thenReturnEmptyList() {
         // Given
-        when(feedbackRepository.findAllByOrderByCreatedAtAsc()).thenReturn(List.of());
+        when(feedbackRepository.findAllByOrderByCreatedAtDesc(any(Pageable.class))).thenReturn(List.of());
 
         // When
         List<FeedbackResponse> responses = feedbackService.getAllFeedback();
 
         // Then
         assertThat(responses).isEmpty();
+    }
+
+    @Test
+    void givenInvalidPageRequest_whenGetFeedback_thenClampToSafeBounds() {
+        // Given
+        when(feedbackRepository.findAllByOrderByCreatedAtDesc(any(Pageable.class))).thenReturn(List.of());
+
+        // When
+        feedbackService.getFeedback(-5, 500);
+
+        // Then
+        verify(feedbackRepository).findAllByOrderByCreatedAtDesc(argThat(pageable ->
+                pageable.getPageNumber() == 0 && pageable.getPageSize() == 100));
     }
 
     private static User user(String email, String name, String nickname) {

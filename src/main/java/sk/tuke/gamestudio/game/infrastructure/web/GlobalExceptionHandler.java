@@ -24,6 +24,7 @@ public class GlobalExceptionHandler {
             case GameDomainException.MoveLimitReached  e -> HttpStatus.BAD_REQUEST;
             case GameDomainException.InvalidColor      e -> HttpStatus.BAD_REQUEST;
             case GameDomainException.InvalidSize       e -> HttpStatus.BAD_REQUEST;
+            case GameDomainException.StoreUnavailable  e -> HttpStatus.SERVICE_UNAVAILABLE;
         };
         return ResponseEntity.status(status).body(error(ex.getMessage()));
     }

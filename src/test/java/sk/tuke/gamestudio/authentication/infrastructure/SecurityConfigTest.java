@@ -135,6 +135,7 @@ class SecurityConfigTest {
         ReflectionTestUtils.setField(config, "rememberMeCookieName", "FF_REMEMBER_ME");
         ReflectionTestUtils.setField(config, "rememberMeTokenValiditySeconds", 1234);
         ReflectionTestUtils.setField(config, "rememberMeSecureCookie", true);
+        ReflectionTestUtils.setField(config, "rememberMeAlwaysRemember", false);
 
         UserDetailsService service = username -> org.springframework.security.core.userdetails.User
                 .withUsername(username)
@@ -148,7 +149,7 @@ class SecurityConfigTest {
         assertThat(ReflectionTestUtils.getField(rememberMeServices, "cookieName")).isEqualTo("FF_REMEMBER_ME");
         assertThat(ReflectionTestUtils.getField(rememberMeServices, "tokenValiditySeconds")).isEqualTo(1234);
         assertThat(ReflectionTestUtils.getField(rememberMeServices, "useSecureCookie")).isEqualTo(true);
-        assertThat(ReflectionTestUtils.getField(rememberMeServices, "alwaysRemember")).isEqualTo(true);
+        assertThat(ReflectionTestUtils.getField(rememberMeServices, "alwaysRemember")).isEqualTo(false);
     }
 
     @Test

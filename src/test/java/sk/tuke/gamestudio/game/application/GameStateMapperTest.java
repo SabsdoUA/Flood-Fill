@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GameStateMapperTest {
 
-    private final GameStateMapper mapper = new GameStateMapper() {};
+    private final GameStateMapper mapper = new GameStateMapper();
 
     static Stream<GameState> states() {
         Board board = new Board(new Color[][]{{Color.RED, Color.BLUE}, {Color.GREEN, Color.YELLOW}}, 2);

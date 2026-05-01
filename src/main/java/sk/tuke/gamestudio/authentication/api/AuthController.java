@@ -21,6 +21,8 @@ import sk.tuke.gamestudio.authentication.api.dto.RegisterRequest;
 import sk.tuke.gamestudio.authentication.api.dto.ResendVerificationRequest;
 import sk.tuke.gamestudio.authentication.api.dto.ResetPasswordRequest;
 import sk.tuke.gamestudio.authentication.core.service.UserService;
+import sk.tuke.gamestudio.authentication.infrastructure.AuthRateLimiter;
+import sk.tuke.gamestudio.authentication.infrastructure.AuthRateLimiter.Bucket;
 
 import java.net.URI;
 import java.util.List;
@@ -33,13 +35,16 @@ public class AuthController {
     private final UserService userService;
     private final SessionRegistry sessionRegistry;
     private final PersistentTokenBasedRememberMeServices rememberMeServices;
+    private final AuthRateLimiter authRateLimiter;
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public String register(@Valid @RequestBody RegisterRequest request) {
+    public String register(@Valid @RequestBody RegisterRequest request,
+                           HttpServletRequest httpRequest) {
+        authRateLimiter.check(Bucket.REGISTER, httpRequest, request.getEmail());
         return userService.register(request);
     }
 
@@ -47,6 +52,7 @@ public class AuthController {
     public String login(@Valid @RequestBody LoginRequest request,
                         HttpServletRequest httpRequest,
                         HttpServletResponse httpResponse) {
+        authRateLimiter.check(Bucket.LOGIN, httpRequest, request.getEmail());
         var user = userService.login(request);
 
         var auth = new UsernamePasswordAuthenticationToken(
@@ -75,25 +81,33 @@ public class AuthController {
     }
 
     @PostMapping("/resend-verification")
-    public String resendVerification(@Valid @RequestBody ResendVerificationRequest request) {
+    public String resendVerification(@Valid @RequestBody ResendVerificationRequest request,
+                                     HttpServletRequest httpRequest) {
+        authRateLimiter.check(Bucket.RESEND_VERIFICATION, httpRequest, request.getEmail());
         userService.resendVerification(request.getEmail());
         return "Overovací email bol odoslaný";
     }
 
     @GetMapping("/validate-reset-token")
-    public ResponseEntity<Void> validateResetToken(@RequestParam String token) {
+    public ResponseEntity<Void> validateResetToken(@RequestParam String token,
+                                                   HttpServletRequest httpRequest) {
+        authRateLimiter.check(Bucket.VALIDATE_RESET_TOKEN, httpRequest, token);
         userService.validateResetToken(token);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/forgot-password")
-    public String forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+    public String forgotPassword(@Valid @RequestBody ForgotPasswordRequest request,
+                                 HttpServletRequest httpRequest) {
+        authRateLimiter.check(Bucket.FORGOT_PASSWORD, httpRequest, request.getEmail());
         userService.forgotPassword(request.getEmail());
         return "Ak účet existuje, pošleme vám email na obnovu hesla";
     }
 
     @PostMapping("/reset-password")
-    public String resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+    public String resetPassword(@Valid @RequestBody ResetPasswordRequest request,
+                                HttpServletRequest httpRequest) {
+        authRateLimiter.check(Bucket.RESET_PASSWORD, httpRequest, request.getToken());
         userService.resetPassword(request.getToken(), request.getNewPassword());
         return "Heslo bolo úspešne zmenené";
     }

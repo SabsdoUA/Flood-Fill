@@ -20,8 +20,12 @@ import sk.tuke.gamestudio.authentication.core.model.AuthProvider;
 import sk.tuke.gamestudio.authentication.core.model.User;
 
 import java.security.Principal;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HexFormat;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -71,8 +75,8 @@ public class UserServiceImpl implements UserService {
         user.setProvider(AuthProvider.LOCAL);
         user.setEmailVerified(false);
 
-        String token = UUID.randomUUID().toString();
-        user.setVerificationToken(token);
+        String token = newToken();
+        user.setVerificationToken(tokenDigest(token));
         user.setVerificationTokenExpiresAt(Instant.now().plus(24, ChronoUnit.HOURS));
 
         userRepository.save(user);
@@ -104,7 +108,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void verifyEmail(String token) {
-        User user = userRepository.findByVerificationToken(token)
+        User user = findByVerificationToken(token)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Neplatný overovací token"));
 
         if (user.getVerificationTokenExpiresAt() != null
@@ -129,8 +133,8 @@ public class UserServiceImpl implements UserService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email je už potvrdený");
         }
 
-        String token = UUID.randomUUID().toString();
-        user.setVerificationToken(token);
+        String token = newToken();
+        user.setVerificationToken(tokenDigest(token));
         user.setVerificationTokenExpiresAt(Instant.now().plus(24, ChronoUnit.HOURS));
         userRepository.save(user);
         emailDeliveryService.sendEmailVerification(normalized, user.getNickname(), token);
@@ -146,8 +150,8 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userOpt.get();
-        String token = UUID.randomUUID().toString();
-        user.setResetToken(token);
+        String token = newToken();
+        user.setResetToken(tokenDigest(token));
         user.setResetTokenExpiresAt(Instant.now().plus(1, ChronoUnit.HOURS));
         userRepository.save(user);
         emailDeliveryService.sendPasswordReset(normalized, token);
@@ -155,7 +159,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void validateResetToken(String token) {
-        User user = userRepository.findByResetToken(token)
+        User user = findByResetToken(token)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Neplatný token na obnovu hesla"));
 
         if (user.getResetTokenExpiresAt() != null
@@ -167,7 +171,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void resetPassword(String token, String newPassword) {
-        User user = userRepository.findByResetToken(token)
+        User user = findByResetToken(token)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Neplatný token na obnovu hesla"));
 
         if (user.getResetTokenExpiresAt() != null
@@ -269,6 +273,33 @@ public class UserServiceImpl implements UserService {
     private Optional<User> findByIdentity(String identity) {
         return userRepository.findByEmail(identity)
                 .or(() -> userRepository.findByNickname(identity));
+    }
+
+    private Optional<User> findByVerificationToken(String rawToken) {
+        return userRepository.findByVerificationToken(tokenDigest(rawToken))
+                .or(() -> userRepository.findByVerificationToken(rawToken));
+    }
+
+    private Optional<User> findByResetToken(String rawToken) {
+        return userRepository.findByResetToken(tokenDigest(rawToken))
+                .or(() -> userRepository.findByResetToken(rawToken));
+    }
+
+    private static String newToken() {
+        return UUID.randomUUID().toString();
+    }
+
+    private static String tokenDigest(String rawToken) {
+        if (rawToken == null) {
+            return null;
+        }
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256")
+                    .digest(rawToken.getBytes(StandardCharsets.UTF_8));
+            return HexFormat.of().formatHex(digest);
+        } catch (NoSuchAlgorithmException ex) {
+            throw new IllegalStateException("SHA-256 digest is unavailable", ex);
+        }
     }
 
     private boolean passwordValid(User user, String rawPassword) {

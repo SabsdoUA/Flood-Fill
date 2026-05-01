@@ -9,7 +9,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.core.env.Environment;
 import org.springframework.data.repository.Repository;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -28,8 +27,6 @@ class StartupLoggerTest {
         ListableBeanFactory beanFactory = mock(ListableBeanFactory.class);
         @SuppressWarnings("unchecked")
         ObjectProvider<CacheManager> cacheProvider = mock(ObjectProvider.class);
-        @SuppressWarnings("unchecked")
-        ObjectProvider<WebSocketMessageBrokerStats> websocketProvider = mock(ObjectProvider.class);
         Metamodel metamodel = mock(Metamodel.class);
 
         when(environment.getProperty("spring.application.name", "application")).thenReturn("flood-fill");
@@ -42,10 +39,9 @@ class StartupLoggerTest {
         when(emf.getMetamodel()).thenReturn(metamodel);
         when(metamodel.getEntities()).thenReturn(Set.of(mock(jakarta.persistence.metamodel.EntityType.class)));
 
-        when(websocketProvider.getIfAvailable()).thenReturn(null);
         when(cacheProvider.getIfAvailable()).thenReturn(null);
 
-        StartupLogger logger = new StartupLogger(environment, emf, beanFactory, cacheProvider, websocketProvider);
+        StartupLogger logger = new StartupLogger(environment, emf, beanFactory, cacheProvider);
         ReflectionTestUtils.setField(logger, "actuatorBasePath", "/actuator");
         ReflectionTestUtils.setField(logger, "actuatorExposure", "health, info");
 
@@ -59,8 +55,6 @@ class StartupLoggerTest {
         ListableBeanFactory beanFactory = mock(ListableBeanFactory.class);
         @SuppressWarnings("unchecked")
         ObjectProvider<CacheManager> cacheProvider = mock(ObjectProvider.class);
-        @SuppressWarnings("unchecked")
-        ObjectProvider<WebSocketMessageBrokerStats> websocketProvider = mock(ObjectProvider.class);
         Metamodel metamodel = mock(Metamodel.class);
         CacheManager cacheManager = mock(CacheManager.class);
 
@@ -75,11 +69,10 @@ class StartupLoggerTest {
         when(emf.getMetamodel()).thenReturn(metamodel);
         when(metamodel.getEntities()).thenReturn(Set.of());
 
-        when(websocketProvider.getIfAvailable()).thenReturn(new WebSocketMessageBrokerStats());
         when(cacheProvider.getIfAvailable()).thenReturn(cacheManager);
         when(cacheManager.getCacheNames()).thenReturn(List.of());
 
-        StartupLogger logger = new StartupLogger(environment, emf, beanFactory, cacheProvider, websocketProvider);
+        StartupLogger logger = new StartupLogger(environment, emf, beanFactory, cacheProvider);
         ReflectionTestUtils.setField(logger, "actuatorBasePath", "/ops");
         ReflectionTestUtils.setField(logger, "actuatorExposure", "health,,metrics ");
         logger.run(null);

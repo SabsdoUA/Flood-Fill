@@ -12,7 +12,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.core.env.Environment;
 import org.springframework.data.repository.Repository;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -26,7 +25,6 @@ public class StartupLogger implements ApplicationRunner {
     private final EntityManagerFactory entityManagerFactory;
     private final ListableBeanFactory beanFactory;
     private final ObjectProvider<CacheManager> cacheManagerProvider;
-    private final ObjectProvider<WebSocketMessageBrokerStats> websocketStatsProvider;
 
     @Value("${management.endpoints.web.base-path:/actuator}")
     private String actuatorBasePath;
@@ -47,7 +45,6 @@ public class StartupLogger implements ApplicationRunner {
 
         var jpaRepositories = beanFactory.getBeanNamesForType(Repository.class).length;
         var loadedEntities = entityManagerFactory.getMetamodel().getEntities().size();
-        var websocketStatus = resolveWebsocketStatus();
         var cacheWarmupStatus = resolveCacheStatus();
 
         log.info("\n==================================================\n" +
@@ -55,7 +52,7 @@ public class StartupLogger implements ApplicationRunner {
                         "--------------------------------------------------\n" +
                         "app={}\nprofiles={}\nport={}\ndbUrl={}\nredisRepositoriesEnabled={}\n" +
                         "actuatorBasePath={}\nactuatorExposure={}\n" +
-                        "jpaRepositories={}\nentitiesLoaded={}\nwebsocketInitialized={}\ncacheWarmup={}\n" +
+                        "jpaRepositories={}\nentitiesLoaded={}\ncacheWarmup={}\n" +
                         "==================================================",
                 applicationName,
                 profiles,
@@ -66,16 +63,7 @@ public class StartupLogger implements ApplicationRunner {
                 normalizeExposure(actuatorExposure),
                 jpaRepositories,
                 loadedEntities,
-                websocketStatus,
                 cacheWarmupStatus);
-    }
-
-    private String resolveWebsocketStatus() {
-        var stats = websocketStatsProvider.getIfAvailable();
-        if (stats == null) {
-            return "disabled";
-        }
-        return "enabled";
     }
 
     private String resolveCacheStatus() {
