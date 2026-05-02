@@ -24,6 +24,8 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -69,8 +71,8 @@ public class SecurityConfig {
     private static final String[] PUBLIC_HEALTH_ENDPOINTS =
             { "/actuator/health", "/actuator/health/**" };
 
-    private static final String[] SOURCE_MAP_PATTERNS =
-            { "/*.map", "/assets/**/*.map" };
+    private static final RequestMatcher[] SOURCE_MAP_MATCHERS =
+            { new AntPathRequestMatcher("/*.map"), new AntPathRequestMatcher("/assets/**/*.map") };
 
     // Static frontend assets must be public — served from Spring Boot on Cloud Run
     private static final String[] STATIC_RESOURCE_PATTERNS =
@@ -197,7 +199,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/feedback", "/api/leaderboard/win").authenticated()
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(PUBLIC_HEALTH_ENDPOINTS).permitAll()
-                        .requestMatchers(SOURCE_MAP_PATTERNS).denyAll()
+                        .requestMatchers(SOURCE_MAP_MATCHERS).denyAll()
                         .requestMatchers(STATIC_RESOURCE_PATTERNS).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

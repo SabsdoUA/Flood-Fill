@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.cors.CorsConfigurationSource;
 import sk.tuke.gamestudio.authentication.core.UserRepository;
@@ -62,6 +63,17 @@ class SecurityConfigTest {
         SecurityFilterChain result = config.securityFilterChain(http, registrations, rememberMeServices, persistentTokenRepository);
 
         assertThat(result).isSameAs(chain);
+    }
+
+    @Test
+    void givenNestedSourceMapPath_whenEvaluateSourceMapMatchers_thenPathIsMatched() {
+        RequestMatcher[] matchers = (RequestMatcher[]) ReflectionTestUtils.getField(SecurityConfig.class, "SOURCE_MAP_MATCHERS");
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/assets/js/app.js.map");
+        request.setServletPath("/assets/js/app.js.map");
+
+        assertThat(matchers).isNotNull();
+        assertThat(matchers)
+                .anySatisfy(matcher -> assertThat(matcher.matches(request)).isTrue());
     }
 
     @Test
