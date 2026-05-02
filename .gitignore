@@ -17,6 +17,7 @@ $RECYCLE.BIN/
 *~
 # ============Logs and temporary files============
 *.log
+cloudrun-*-logs.json
 *.out
 *.err
 *.pid
