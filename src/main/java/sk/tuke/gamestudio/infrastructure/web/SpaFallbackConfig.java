@@ -31,6 +31,10 @@ public class SpaFallbackConfig implements WebMvcConfigurer {
                 .addResolver(new PathResourceResolver() {
                     @Override
                     protected Resource getResource(String resourcePath, Resource location) throws IOException {
+                        if (isRootRequest(resourcePath)) {
+                            return spaIndexResource();
+                        }
+
                         Resource requested = location.createRelative(resourcePath);
                         if (requested.exists() && requested.isReadable()) {
                             return requested;
@@ -38,11 +42,18 @@ public class SpaFallbackConfig implements WebMvcConfigurer {
                         if (!shouldServeSpaFallback(resourcePath)) {
                             return null;
                         }
-                        // SPA fallback: serve index.html for all client-side routes
-                        Resource index = new ClassPathResource("/static/index.html");
-                        return index.exists() ? index : null;
+                        return spaIndexResource();
                     }
                 });
+    }
+
+    private static boolean isRootRequest(String resourcePath) {
+        return resourcePath == null || resourcePath.isBlank() || "/".equals(resourcePath);
+    }
+
+    private static Resource spaIndexResource() {
+        Resource index = new ClassPathResource("/static/index.html");
+        return index.exists() ? index : null;
     }
 
     private static boolean shouldServeSpaFallback(String resourcePath) {

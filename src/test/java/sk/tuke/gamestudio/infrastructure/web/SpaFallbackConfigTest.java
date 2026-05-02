@@ -29,6 +29,7 @@ class SpaFallbackConfigTest {
     @AfterEach
     void cleanup() throws Exception {
         Files.deleteIfExists(staticDir.resolve("existing.txt"));
+        Files.deleteIfExists(staticDir.resolve("index.html"));
         if (Files.exists(staticDir) && isDirectoryEmpty(staticDir)) {
             Files.deleteIfExists(staticDir);
         }
@@ -79,6 +80,19 @@ class SpaFallbackConfigTest {
         } else {
             assertThat(resolved).isNull();
         }
+    }
+
+    @Test
+    void givenRootPath_whenResolve_thenReturnIndexHtml() {
+        createClasspathIndex();
+        ResourceResolver resolver = resolverFromConfig();
+        List<Resource> locations = List.of(new org.springframework.core.io.FileSystemResource(staticDir.toString() + "/"));
+
+        Resource resolved = resolver.resolveResource(mock(HttpServletRequest.class), "", locations, null);
+
+        assertThat(resolved).isNotNull();
+        assertThat(resolved.exists()).isTrue();
+        assertThat(resolved.getFilename()).isEqualTo("index.html");
     }
 
     @Test
@@ -143,5 +157,14 @@ class SpaFallbackConfigTest {
 
     private boolean classpathIndexExists() {
         return new ClassPathResource("/static/index.html").exists();
+    }
+
+    private void createClasspathIndex() {
+        try {
+            Files.createDirectories(staticDir);
+            Files.writeString(staticDir.resolve("index.html"), "<!doctype html><html></html>");
+        } catch (Exception e) {
+            throw new IllegalStateException("Cannot create classpath index", e);
+        }
     }
 }
